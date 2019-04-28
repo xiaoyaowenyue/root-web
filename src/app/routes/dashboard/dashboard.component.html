@@ -1,0 +1,35 @@
+<page-header></page-header>
+<nz-card >
+  <form nz-form [nzLayout]="'inline'" (submit)="getData()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="username">用户名</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.username" name="username" placeholder="请输入" id="username">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="gender">性别</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="q.gender" name="gender" id="gender"  >
+              <nz-option nzLabel="男" nzValue="MALE"></nz-option>
+              <nz-option nzLabel="女" nzValue="FEMALE"></nz-option>
+              <nz-option nzLabel="保密" nzValue="UNKNOWN"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="12" nzSm="24"  class="text-right">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="reset" class="mx-sm">重置</button>
+      </div>
+    </div>
+  </form>
+
+  <st [columns]="columns"></st>
+
+</nz-card>

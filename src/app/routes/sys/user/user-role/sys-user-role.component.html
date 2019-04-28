@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <div class="modal-title">分配角色</div>
+</div>
+
+<div style="border-bottom: 1px solid rgb(233, 233, 233);">
+  <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()">
+    全选
+  </label>
+</div>
+<br />
+<nz-checkbox-group [(ngModel)]="roles" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+
+<div class="modal-footer">
+  <button nz-button nzType="primary" (click)="save()">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>
