@@ -1,6 +1,6 @@
 <page-header></page-header>
 <nz-card>
-  <form nz-form [nzLayout]="inline" (submit)="getData()" class="search__form">
+  <form nz-form [nzLayout]="inline" (submit)="query()" class="search__form">
     <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
       <div nz-col nzMd="4" nzSm="24">
         <nz-form-item>
@@ -23,12 +23,12 @@
 
       <div nz-col>
         <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-        <button *ngIf="checkedIds.length>0" nz-button nzType="danger" (click)="deleteBatchIds()">批量删除</button>
+        <button nz-popconfirm *ngIf="checkedIds.length>0" nz-button nzType="danger"  nzTitle="确定删除选中的记录吗?" (nzOnConfirm)="deleteBatchIds()">批量删除</button>
       </div>
     </div>
   </form>
 
-  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="data.number" [ps]="data.size"
+  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="q.page" [ps]="q.size"
     (change)="onChange($event)"></st>
 
 </nz-card>

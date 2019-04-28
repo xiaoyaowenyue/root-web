@@ -26,7 +26,8 @@ export class SysUserComponent implements OnInit {
   //查询参数
   q: any = {
     username: "",
-    gender: ""
+    gender: "",
+    page: 1
   }
 
   genderEnum = [
@@ -52,6 +53,13 @@ export class SysUserComponent implements OnInit {
         },
         {
           text: '角色', icon: 'team', type: 'drawer', click: (record, modal) => { this.message.info(modal) }, drawer: { component: SysUserRoleComponent, size: 300 }
+        },
+        {
+          text: '删除', icon: 'delete', type: 'del', click: (record) => {
+            this.sysUserService.delete(record.id).subscribe(() => {
+              this.refresh();
+            });
+          }
         }
       ]
     }
@@ -62,7 +70,7 @@ export class SysUserComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getData();
+    this.query();
   }
 
   add() {
@@ -71,23 +79,31 @@ export class SysUserComponent implements OnInit {
     //   .subscribe(() => this.st.reload());
   }
 
-  reset() {
-    this.q = {};
-  }
-
-  getData() {
+  // 查询数据
+  query() {
     this.loading = true;
+    this.q.page = 1;
+    this.checkedIds=[];
     return this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
       this.data = result.data;
+      this.q.page = result.data.number;
+      this.q.size = result.data.size;
       this.loading = false;
+    });
+  }
+
+  //刷新
+  refresh() {
+    this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
+      this.data = result.data;
     });
   }
 
   onChange(ev: STChange) {
     if (ev.type === "pi") {  // 换页操作
-      this.sysUserService.getSysUsers({ ...this.q, page: ev.pi, size: ev.ps }).subscribe((result: Result) => {
-        this.data = result.data;
-      });
+      this.q.page = ev.pi;
+      this.q.size = ev.ps;
+      this.refresh();
     }
     if (ev.type === "checkbox") { // 选中操作
       this.checkedIds = [];
@@ -98,8 +114,10 @@ export class SysUserComponent implements OnInit {
   }
 
   //批量删除
-  deleteBatchIds(){
+  deleteBatchIds() {
     //this.modal.open
+    this.checkedIds=[];
+    this.refresh();
   }
 
 }

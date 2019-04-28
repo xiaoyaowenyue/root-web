@@ -1,12 +1,14 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {NzModalRef, NzMessageService} from 'ng-zorro-antd';
-import {_HttpClient} from '@delon/theme';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
+import { _HttpClient } from '@delon/theme';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sys-user-edit',
   templateUrl: './sys-user-edit.component.html',
 })
 export class SysUserEditComponent implements OnInit {
+  validateForm:FormGroup;
 
   record: any = {};
 
@@ -14,11 +16,14 @@ export class SysUserEditComponent implements OnInit {
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit(): void {
-    console.log(this.record);
+    this.validateForm = this.fb.group({
+      username: [this.record.username, [Validators.required]]
+    });
   }
 
   save(value: any) {
@@ -31,4 +36,9 @@ export class SysUserEditComponent implements OnInit {
   close() {
     this.modal.destroy();
   }
+
+  submitForm(){
+
+  }
+
 }
