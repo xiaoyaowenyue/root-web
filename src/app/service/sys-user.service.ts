@@ -32,4 +32,9 @@ export class SysUserService {
     return this.http.delete(`${this.url}/${userId}`);
   }
 
+  //批量删除
+  deleteBatchByIds(userIds:string[]){
+    return this.http.delete(`${this.url}`,{ids:userIds});
+  }
+
 }

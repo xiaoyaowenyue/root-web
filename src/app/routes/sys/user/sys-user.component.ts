@@ -83,7 +83,7 @@ export class SysUserComponent implements OnInit {
   query() {
     this.loading = true;
     this.q.page = 1;
-    this.checkedIds=[];
+    this.checkedIds = [];
     return this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
       this.data = result.data;
       this.q.page = result.data.number;
@@ -115,9 +115,10 @@ export class SysUserComponent implements OnInit {
 
   //批量删除
   deleteBatchIds() {
-    //this.modal.open
-    this.checkedIds=[];
-    this.refresh();
+    this.sysUserService.deleteBatchByIds(this.checkedIds).subscribe(result => {
+      this.checkedIds = [];
+      this.refresh();
+    })
   }
 
 }
