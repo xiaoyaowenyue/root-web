@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <div class="modal-title">编辑用户</div>
+  <div class="modal-title">新增用户</div>
 </div>
 
 <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)" nzLayout="horizontal">
@@ -7,7 +7,7 @@
     <nz-form-label nzSpan="6" nzRequired nzFor="username">用户名</nz-form-label>
     <nz-form-control nzSpan="12">
       <input nz-input formControlName="username" id="username" name="username" placeholder="请输入用户名">
-      <nz-form-explain *ngIf="username.dirty && username?.errors">
+      <nz-form-explain *ngIf="username.dirty && username.errors">
         请输入用户名!
       </nz-form-explain>
     </nz-form-control>
@@ -33,7 +33,6 @@
       </nz-select>
     </nz-form-control>
   </nz-form-item>
-  
 
   <div class="modal-footer">
     <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()" type="button">

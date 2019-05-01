@@ -60,10 +60,6 @@ export class DefaultInterceptor implements HttpInterceptor {
     );
   }
 
-  private showError(ev: HttpErrorResponse): Observable<any> {
-    this.injector.get(NzNotificationService).error(`请求错误 ${ev.status}`, `${ev.statusText}`);
-    return of(ev);
-  }
 
   private handleData(ev: HttpResponseBase): Observable<any> {
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
@@ -132,7 +128,8 @@ export class DefaultInterceptor implements HttpInterceptor {
         return of(event);
       }),
       catchError((err: HttpErrorResponse) =>
-        this.showError(err)),
+        this.handleData(err)
+      ),
     );
   }
 }

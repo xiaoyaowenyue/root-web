@@ -41,7 +41,7 @@ export class StartupService {
     zip(
       //this.httpClient.get('http://localhost:4200/assets/tmp/app-data.json')
       this.httpClient.get('/api/v1/sysInfo/userMenus'),
-      this.httpClient.get('/api/v1/sysUsers/personal')
+      this.httpClient.get('/api/v1/account')
     ).pipe(
       // 接收其他拦截器后产生的异常消息
       catchError(([menuData, userInfo]) => {

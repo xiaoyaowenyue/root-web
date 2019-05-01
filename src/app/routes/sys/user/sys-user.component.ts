@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { SysUserEditComponent } from "./edit/sys-user-edit.component";
-import { NzMessageService } from "ng-zorro-antd";
+import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from "ng-zorro-antd";
 import { Result } from '@core/common/result';
 import { SysUserService } from 'app/service/sys-user.service';
 import { SysUserRoleComponent } from './user-role/sys-user-role.component';
+import { SysUserAddComponent } from './add/sys-user-add.component';
 
 
 @Component({
@@ -43,13 +44,14 @@ export class SysUserComponent implements OnInit {
     { title: '编号', type: 'checkbox', index: 'id' },
     { title: '头像', type: 'img', index: 'avatar' },
     { title: '用户名', index: 'username' },
+    { title: '性别', index: 'gender' },
     { title: '邮箱', index: 'email' },
     {
       title: '编辑',
       buttons: [
         // { text: '查看', click: (item: any) => `/form/${item.id}` },
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent, click: (record, modal) => { }
+          text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent, click: (record, modal) => { this.refresh() }
         },
         {
           text: '角色', icon: 'team', type: 'drawer', click: (record, modal) => { this.message.info(modal) }, drawer: { component: SysUserRoleComponent, size: 300 }
@@ -65,18 +67,12 @@ export class SysUserComponent implements OnInit {
     }
   ];
 
-  constructor(private sysUserService: SysUserService, private modal: ModalHelper, private message: NzMessageService) {
+  constructor(private sysUserService: SysUserService, private modal: ModalHelper, private message: NzMessageService,private notification:NzNotificationService) {
   }
 
 
   ngOnInit() {
     this.query();
-  }
-
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
   }
 
   // 查询数据
@@ -89,6 +85,18 @@ export class SysUserComponent implements OnInit {
       this.q.page = result.data.number;
       this.q.size = result.data.size;
       this.loading = false;
+    });
+  }
+
+  add(){
+    this.modal.create(SysUserAddComponent).subscribe((result:Result)=>{
+      if(result.code===200){
+        this.message.success(result.msg);
+        this.refresh();
+      }else{
+        this.notification.error("保存失败",result.msg);
+      }
+      
     });
   }
 

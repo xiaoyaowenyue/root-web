@@ -8,6 +8,7 @@ import { _HttpClient } from '@delon/theme';
   providedIn: 'root'
 })
 export class SysUserService {
+  
 
   url: string = "/api/v1/sysUsers";
 
@@ -22,9 +23,19 @@ export class SysUserService {
   getSysUserRoles(userId: string): Observable<Result> {
     return this.http.get(`${this.url}/${userId}/sysRoles`);
   }
+
+  //保存用户
+  saveSysUser(value: any) {
+    return this.http.post(`${this.url}`,value);
+  }
   //保存用户的角色状态
   postSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
     return this.http.post(`${this.url}/${userId}/sysRoles`, roleIds);
+  }
+
+  //修改用户
+  putSysUser(sysUser: any): Observable<Result> {
+    return this.http.put(`${this.url}/${sysUser.id}`, sysUser);
   }
 
   //删除用户
@@ -33,8 +44,8 @@ export class SysUserService {
   }
 
   //批量删除
-  deleteBatchByIds(userIds:string[]){
-    return this.http.delete(`${this.url}`,{ids:userIds});
+  deleteBatchByIds(userIds: string[]) {
+    return this.http.delete(`${this.url}`, { ids: userIds });
   }
 
 }
