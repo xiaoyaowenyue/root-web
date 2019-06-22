@@ -17,14 +17,14 @@ export class SysUserAddComponent implements OnInit {
   ngOnInit() {
     this.validateForm = this.fb.group(
       {
-        "username": [null, [Validators.required]],
-        "email": [null, [Validators.required, Validators.email]],
-        "gender": [null],
+        username: [null, [Validators.required]],
+        email: [null, [Validators.required, Validators.email]],
+        gender: [null],
       }
-    )
+    );
   }
 
-  //提交表单
+  // 提交表单
   submitForm(value) {
     if (this.username.invalid || this.email.invalid) {
       this.username.markAsDirty();
@@ -35,7 +35,7 @@ export class SysUserAddComponent implements OnInit {
     }
     this.sysUserService.saveSysUser(value).subscribe((result: Result) => {
       this.ref.close(result);
-    })
+    });
   }
   close() {
     this.ref.destroy();
@@ -48,7 +48,7 @@ export class SysUserAddComponent implements OnInit {
     return this.validateForm.controls.email;
   }
 
-  get gender(){
+  get gender() {
     return this.validateForm.controls.gender;
   }
 

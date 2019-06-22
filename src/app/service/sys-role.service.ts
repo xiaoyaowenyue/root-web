@@ -8,11 +8,25 @@ import { Result } from '@core/common/result';
 })
 export class SysRoleService {
 
-  url:string="/api/v1/sysRoles";
-  constructor(private http:_HttpClient) { }
 
-  getAll():Observable<Result>{
+  constructor(private http: _HttpClient) { }
+
+  url = '/api/v1/sysRoles';
+  
+  delete(id: string) {
+    return this.http.delete(`${this.url}/${id}`);
+  }
+
+  getSysRoles(q: any): Observable<Result> {
+    return this.http.get(this.url, q);
+  }
+
+  getAll(): Observable<Result> {
     return this.http.get(`${this.url}/list`);
+  }
+
+  deleteBatchByIds(checkedIds: string[]) {
+    return this.http.delete(this.url, checkedIds);
   }
 
 }

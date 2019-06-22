@@ -4,8 +4,6 @@ import { _HttpClient } from '@delon/theme';
 import { SysRoleService } from 'app/service/sys-role.service';
 import { SysUserService } from 'app/service/sys-user.service';
 import { zip } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { resolve } from 'q';
 
 @Component({
   selector: 'app-sys-user-role',
@@ -29,8 +27,8 @@ export class SysUserRoleComponent implements OnInit {
       this.sysRoleService.getAll(),
       this.sysUserService.getSysUserRoles(this.record.id)
     ).subscribe(([sysRoleResult, sysUserRoleResult]) => {
-      for (let i of sysRoleResult.data) {
-        for (let j of sysUserRoleResult.data) {
+      for (const i of sysRoleResult.data) {
+        for (const j of sysUserRoleResult.data) {
           if (i.id === j.id) {
             i.checked = true;
             break;
@@ -42,18 +40,18 @@ export class SysUserRoleComponent implements OnInit {
           this.allChecked = false;
           this.roles.push({ label: i.name, value: i.id, checked: false });
         }
-      };
+      }
     });
 
   }
 
-  //保存
+  // 保存
   save() {
-    let roleIds:string[] = this.roles.filter(item=>item.checked).map(item=>{
+    const roleIds: string[] = this.roles.filter(item => item.checked).map(item => {
       return item.value;
     });
     this.sysUserService.postSysUserRoles(this.record.id, roleIds).subscribe(next => {
-      this.ref.close("保存成功");
+      this.ref.close('保存成功');
     });
   }
 
@@ -87,7 +85,7 @@ export class SysUserRoleComponent implements OnInit {
     }
   }
 
-  //关闭
+  // 关闭
   close() {
     this.ref.close();
   }

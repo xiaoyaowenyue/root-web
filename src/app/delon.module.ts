@@ -60,8 +60,8 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
     ...{
       login_url: '/passport/login',
       token_send_key: 'Authorization',
-      token_send_template: "Bearer ${token}",
-      token_send_place: "header"
+      token_send_template: 'Bearer ${token}',
+      token_send_place: 'header'
     } as DelonAuthConfig
   };
 }
@@ -72,8 +72,8 @@ export function fnSTConfig(): STConfig {
   return {
     ...new STConfig(),
     ...{
-      req: {reName: {pi: "page", ps: "size"}},
-      modal: {size: 'lg',paramsName: 'record'},
+      req: {reName: {pi: 'page', ps: 'size'}},
+      modal: {size: 'lg', paramsName: 'record'},
       page: {front: false},
     } as STConfig
   };
