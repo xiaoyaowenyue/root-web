@@ -39,7 +39,7 @@ export class StartupService {
     }
 
     zip(
-      //this.httpClient.get('http://localhost:4200/assets/tmp/app-data.json')
+      // this.httpClient.get('http://localhost:4200/assets/tmp/app-data.json')
       this.httpClient.get('/api/v1/sysInfo/userMenus'),
       this.httpClient.get('/api/v1/account')
     ).pipe(
@@ -54,7 +54,7 @@ export class StartupService {
 
         // 用户信息：包括姓名、头像、邮箱地址
         this.settingService.setUser(userInfo.data);
-        //this.settingService.setUser(res.user);
+        // this.settingService.setUser(res.user);
         // ACL：设置权限为全量
         this.aclService.setFull(true);
         // 初始化菜单
@@ -63,7 +63,7 @@ export class StartupService {
         }
 
         // 设置页面标题的后缀
-        this.titleService.suffix = "Alain";
+        this.titleService.suffix = 'Alain';
       },
       () => {
       },
