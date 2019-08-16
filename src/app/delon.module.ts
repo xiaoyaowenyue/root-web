@@ -2,18 +2,18 @@
  * 进一步对基础模块的导入提炼
  * 有关模块注册指导原则请参考：https://github.com/ng-alain/ng-alain/issues/180
  */
-import {NgModule, Optional, SkipSelf, ModuleWithProviders} from '@angular/core';
-import {throwIfAlreadyLoaded} from '@core';
+import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
+import { throwIfAlreadyLoaded } from '@core';
 
-import {AlainThemeModule} from '@delon/theme';
+import { AlainThemeModule, } from '@delon/theme';
 
 // #region mock
-import {DelonMockModule} from '@delon/mock';
+import { DelonMockModule } from '@delon/mock';
 import * as MOCKDATA from '../../_mock';
-import {environment} from '@env/environment';
+import { environment } from '@env/environment';
 
 const MOCK_MODULES = !environment.production
-  ? [DelonMockModule.forRoot({data: MOCKDATA})]
+  ? [DelonMockModule.forRoot({ data: MOCKDATA })]
   : [];
 // #endregion
 
@@ -29,8 +29,8 @@ const MOCK_MODULES = !environment.production
  *  </section>
  *  ```
  */
-import {RouteReuseStrategy} from '@angular/router';
-import {ReuseTabService, ReuseTabStrategy} from '@delon/abc/reuse-tab';
+import { RouteReuseStrategy } from '@angular/router';
+import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
 
 const REUSETAB_PROVIDES = [
   // {
@@ -43,47 +43,42 @@ const REUSETAB_PROVIDES = [
 
 // #region global config functions
 
-import {PageHeaderConfig} from '@delon/abc';
+import { PageHeaderConfig } from '@delon/abc';
 
 export function fnPageHeaderConfig(): PageHeaderConfig {
-  return {
-    ...new PageHeaderConfig(),
-    ...{homeI18n: 'Alain', autoTitle: false} as PageHeaderConfig
-  };
+  let pageHeaderConfig = new PageHeaderConfig();
+  pageHeaderConfig.homeI18n = 'Alain'
+  pageHeaderConfig.autoTitle = false
+  return pageHeaderConfig
 }
 
-import {DelonAuthConfig} from '@delon/auth';
+import { DelonAuthConfig } from '@delon/auth';
 
 export function fnDelonAuthConfig(): DelonAuthConfig {
-  return {
-    ...new DelonAuthConfig(),
-    ...{
-      login_url: '/passport/login',
-      token_send_key: 'Authorization',
-      token_send_template: 'Bearer ${token}',
-      token_send_place: 'header'
-    } as DelonAuthConfig
-  };
+  let authConfig = new DelonAuthConfig();
+  authConfig.login_url = '/passport/login';
+  authConfig.token_send_key = 'Authorization';
+  authConfig.token_send_template = 'Bearer ${token}';
+  authConfig.token_send_place = 'header';
+  return authConfig
 }
 
-import {STConfig} from '@delon/abc';
+import { STConfig } from '@delon/abc';
 
 export function fnSTConfig(): STConfig {
-  return {
-    ...new STConfig(),
-    ...{
-      req: {reName: {pi: 'page', ps: 'size'}},
-      modal: {size: 'lg', paramsName: 'record'},
-      page: {front: false},
-    } as STConfig
-  };
+  let stConfig = new STConfig();
+  stConfig.req = { reName: { pi: 'page', ps: 'size' } };
+  stConfig.modal = { size: 'lg', paramsName: 'record' };
+  stConfig.page.front = false
+  return stConfig;
 }
+
 
 const GLOBAL_CONFIG_PROVIDES = [
   // TIPS：@delon/abc 有大量的全局配置信息，例如设置所有 `st` 的页码默认为 `20` 行
-  {provide: STConfig, useFactory: fnSTConfig},
-  {provide: PageHeaderConfig, useFactory: fnPageHeaderConfig},
-  {provide: DelonAuthConfig, useFactory: fnDelonAuthConfig},
+  { provide: STConfig, useFactory: fnSTConfig },
+  { provide: PageHeaderConfig, useFactory: fnPageHeaderConfig },
+  { provide: DelonAuthConfig, useFactory: fnDelonAuthConfig },
 ];
 
 // #endregion

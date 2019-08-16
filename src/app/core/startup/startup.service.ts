@@ -1,14 +1,14 @@
-import {Injectable, Injector, Inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {zip} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, User} from '@delon/theme';
-import {DA_SERVICE_TOKEN, ITokenModel, ITokenService, JWTTokenModel} from '@delon/auth';
-import {ACLService} from '@delon/acl';
-import {NzIconService} from 'ng-zorro-antd';
-import {ICONS_AUTO} from '../../../style-icons-auto';
-import {ICONS} from '../../../style-icons';
+import { Injectable, Injector, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { zip } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, User } from '@delon/theme';
+import { DA_SERVICE_TOKEN, ITokenModel, ITokenService, JWTTokenModel } from '@delon/auth';
+import { ACLService } from '@delon/acl';
+import { NzIconService } from 'ng-zorro-antd';
+import { ICONS_AUTO } from '../../../style-icons-auto';
+import { ICONS } from '../../../style-icons';
 
 /**
  * 用于应用启动时
@@ -50,21 +50,21 @@ export class StartupService {
       })
     ).subscribe(([menuData, userInfo]) => {
 
-        // application data
+      // application data
 
-        // 用户信息：包括姓名、头像、邮箱地址
-        this.settingService.setUser(userInfo.data);
-        // this.settingService.setUser(res.user);
-        // ACL：设置权限为全量
-        this.aclService.setFull(true);
-        // 初始化菜单
-        if (menuData.data) {
-          this.menuService.add(menuData.data);
-        }
+      // 用户信息：包括姓名、头像、邮箱地址
+      this.settingService.setUser(userInfo.data);
+      // this.settingService.setUser(res.user);
+      // ACL：设置权限为全量
+      this.aclService.setFull(true);
+      // 初始化菜单
+      if (menuData.data) {
+        this.menuService.add(menuData.data);
+      }
 
-        // 设置页面标题的后缀
-        this.titleService.suffix = 'Alain';
-      },
+      // 设置页面标题的后缀
+      // this.titleService.suffix = 'Alain';
+    },
       () => {
       },
       () => {
@@ -85,7 +85,7 @@ export class StartupService {
     // mock
     const app: any = {
       name: `ng-alain`,
-      description: `Ng-zorro admin panel front-end framework`
+      description: `Ng-zorro系统框架`
     };
 
     // 应用信息：包括站点名、描述、年份
@@ -101,11 +101,11 @@ export class StartupService {
           {
             text: '仪表盘',
             link: '/dashboard',
-            icon: {type: 'icon', value: 'appstore'}
+            icon: { type: 'icon', value: 'appstore' }
           },
           {
             text: '快捷菜单',
-            icon: {type: 'icon', value: 'rocket'},
+            icon: { type: 'icon', value: 'rocket' },
             shortcutRoot: true
           }
         ]
