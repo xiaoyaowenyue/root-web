@@ -39,7 +39,7 @@ export class UserLoginComponent implements OnDestroy {
     public msg: NzMessageService,
   ) {
     this.form = fb.group({
-      userName: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
+      username: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       password: [null, [Validators.required,Validators.minLength(6)]],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
@@ -50,8 +50,8 @@ export class UserLoginComponent implements OnDestroy {
 
   // #region fields
 
-  get userName() {
-    return this.form.controls.userName;
+  get username() {
+    return this.form.controls.username;
   }
 
   get password() {
@@ -96,11 +96,11 @@ export class UserLoginComponent implements OnDestroy {
     this.error = '';
     let loginType = 'ACCOUNT';
     if (this.type === 0) {
-      this.userName.markAsDirty();
-      this.userName.updateValueAndValidity();
+      this.username.markAsDirty();
+      this.username.updateValueAndValidity();
       this.password.markAsDirty();
       this.password.updateValueAndValidity();
-      if (this.userName.invalid || this.password.invalid) return;
+      if (this.username.invalid || this.password.invalid) return;
     } else {
       let loginType = 'CAPTCHA';
       this.mobile.markAsDirty();
@@ -116,7 +116,7 @@ export class UserLoginComponent implements OnDestroy {
       .post('/login', {
         //type: this.type,
         type: loginType,
-        userName: this.userName.value,
+        username: this.username.value,
         password: this.password.value,
       })
       .subscribe((res: any) => {
@@ -127,7 +127,8 @@ export class UserLoginComponent implements OnDestroy {
         // 清空路由复用信息
         this.reuseTabService.clear();
         // 设置用户Token信息
-        this.tokenService.set(res.data);
+        let tokenInfo = {"expireIn":res.data.expireIn,"token":res.data.accessToken}
+        this.tokenService.set(tokenInfo);
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().then(() => {
           let url = this.tokenService.referrer.url || '/';

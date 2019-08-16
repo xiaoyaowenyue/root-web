@@ -46,6 +46,10 @@ export class DefaultInterceptor implements HttpInterceptor {
     return this.injector.get(NzMessageService);
   }
 
+  get notice(): NzNotificationService {
+    return this.injector.get(NzNotificationService);
+  }
+
   private goTo(url: string) {
     setTimeout(() => this.injector.get(Router).navigateByUrl(url));
   }
@@ -54,10 +58,7 @@ export class DefaultInterceptor implements HttpInterceptor {
     if (ev.status >= 200 && ev.status < 300) return;
 
     const errortext = CODEMESSAGE[ev.status] || ev.statusText;
-    this.injector.get(NzNotificationService).error(
-      `请求错误 ${ev.status}: ${ev.url}`,
-      errortext
-    );
+    this.notice.error(`提示:`, errortext);
   }
 
 
@@ -77,16 +78,16 @@ export class DefaultInterceptor implements HttpInterceptor {
           }
           switch (body.code) {
             case 401:
-              (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
-              this.goTo('/passport/login');
               return throwError(new HttpErrorResponse(Object.assign(ev, { status: body.code, statusText: body.msg })));
-            case 403:
-            case 404:
+            case 400:  //请求的格式不正确
+            case 403:  //拒绝访问
+            case 404:  //资源不存在
+            case 422:  //请求参数校验不通过
             case 500:
-              this.goTo(`/exception/${body.code}`);
-              return throwError(new HttpErrorResponse(Object.assign(ev, { status: body.code, statusText: body.msg })));
             default:
-              return throwError(new HttpErrorResponse(Object.assign(ev, { status: body.code, statusText: body.msg })));
+              this.notice.error("提示:", body.msg)
+              //抛出异常终止后续请求
+              return throwError(null);
           }
 
         }
@@ -127,8 +128,11 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 若一切都正常，则后续操作
         return of(event);
       }),
-      catchError((err: HttpErrorResponse) =>
-        this.handleData(err)
+      catchError((err: HttpErrorResponse) => {
+        if (err != null) {
+          return this.handleData(err)
+        }
+      }
       ),
     );
   }
