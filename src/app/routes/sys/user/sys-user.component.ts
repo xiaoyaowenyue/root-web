@@ -50,7 +50,9 @@ export class SysUserComponent implements OnInit {
       title: '编辑',
       buttons: [
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent, click: (record, modal) => { this.refresh(); }
+          text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent,
+          // SysUserEditComponent的this.modal.close(next.msg)会返回一个值到这来;
+          click: (record, modal) => { this.message.success(modal); this.refresh(); }
         },
         {
           text: '角色', icon: 'team', type: 'drawer', drawer: {
@@ -59,7 +61,8 @@ export class SysUserComponent implements OnInit {
         },
         {
           text: '删除', icon: 'delete', type: 'del', click: (record) => {
-            this.sysUserService.delete(record.id).subscribe(() => {
+            this.sysUserService.delete(record.id).subscribe((res) => {
+              this.message.success(res.msg)
               this.refresh();
             });
           }
@@ -130,5 +133,6 @@ export class SysUserComponent implements OnInit {
       this.refresh();
     });
   }
+
 
 }

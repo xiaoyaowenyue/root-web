@@ -40,7 +40,7 @@ export class SysRoleComponent implements OnInit {
           text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.refresh(); }
         },
         // {
-// tslint:disable-next-line: max-line-length
+        // tslint:disable-next-line: max-line-length
         //   text: '权限', icon: 'team', type: 'drawer', click: (record, modal) => { this.message.info(modal) }, drawer: { component: SysUserRoleComponent, size: 300 }
         // },
         {
@@ -55,7 +55,7 @@ export class SysRoleComponent implements OnInit {
   ];
 
   constructor(private sysRoleService: SysRoleService, private modal: ModalHelper,
-              private message: NzMessageService, private notification: NzNotificationService) {
+    private message: NzMessageService, private notification: NzNotificationService) {
   }
 
 
@@ -68,7 +68,7 @@ export class SysRoleComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    this.sysRoleService.getSysRoles(this.q).subscribe((result: Result) => {
+    this.sysRoleService.getSysRoles(this.q).subscribe((result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;

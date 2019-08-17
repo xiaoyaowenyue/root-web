@@ -30,18 +30,14 @@ export class SysUserEditComponent implements OnInit {
     });
   }
 
-  save(value: any) {
-    this.http.put(`/api/v1/sysUsers/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
-  }
 
   close() {
     this.modal.destroy();
   }
 
+  //保存更改
   submitForm(value) {
+    value.id = this.record.id
     if (this.username.invalid || this.email.invalid) {
       this.username.markAsDirty();
       this.username.updateValueAndValidity();

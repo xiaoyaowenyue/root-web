@@ -4,6 +4,8 @@ import { _HttpClient } from '@delon/theme';
 import { SysRoleService } from 'app/service/sys-role.service';
 import { SysUserService } from 'app/service/sys-user.service';
 import { zip } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { stringify } from '@angular/core/src/render3/util';
 
 @Component({
   selector: 'app-sys-user-role',
@@ -13,7 +15,7 @@ export class SysUserRoleComponent implements OnInit {
   record: any = {};
 
   roles = [];
-  allChecked = true;
+  allChecked = false;
 
   constructor(
     private ref: NzDrawerRef,
@@ -27,19 +29,24 @@ export class SysUserRoleComponent implements OnInit {
       this.sysRoleService.getAll(),
       this.sysUserService.getSysUserRoles(this.record.id)
     ).subscribe(([sysRoleResult, sysUserRoleResult]) => {
-      for (const i of sysRoleResult.data) {
-        for (const j of sysUserRoleResult.data) {
-          if (i.id === j.id) {
-            i.checked = true;
-            break;
-          }
-        }
-        if (i.checked) {
-          this.roles.push({ label: i.name, value: i.id, checked: true });
+      let userRoleMap = new Map<string, any>();
+      // 把用户拥有的角色映射成hashmap,避免使用双重for循环
+      (sysUserRoleResult.data as Array<any>).forEach(value => {
+        userRoleMap.set(value.id, value);
+      });
+      for (let item of sysRoleResult.data) {
+        //判断用户是否拥有这个角色，如果拥有，那就打勾
+        if (userRoleMap.get(item.id) != undefined) {
+          item.checked = true;
         } else {
-          this.allChecked = false;
-          this.roles.push({ label: i.name, value: i.id, checked: false });
+          item.checked = false;
         }
+        this.roles.push({ label: item.name, value: item.id, checked: item.checked });
+      }
+      if (sysRoleResult.data.length == sysUserRoleResult.data.length) {
+        this.allChecked = true
+      } else {
+        this.allChecked = false
       }
     });
 
