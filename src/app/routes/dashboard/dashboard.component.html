@@ -1,35 +1,25 @@
-<page-header></page-header>
-<nz-card >
-  <form nz-form [nzLayout]="'inline'" (submit)="getData()" class="search__form">
-    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
-      <div nz-col nzMd="6" nzSm="24">
-        <nz-form-item>
-          <nz-form-label nzFor="username">用户名</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="q.username" name="username" placeholder="请输入" id="username">
-          </nz-form-control>
-        </nz-form-item>
+<div class="alain-default__content-title">
+  <h1> 仪表盘 <small>欢迎回来 !</small></h1>
+</div>
+<div nz-row nzGutter="16" style="margin: 0 -8px;">
+  <div nz-col nzMd="6" nzSm="12" nzXs="24" style="padding: 0 8px;" class="mb-md">
+    <div nz-row nzAlign="middle" nzType="flex" class="bg-primary rounded-md">
+      <div nz-col nzSpan="12" class="p-md text-white">
+        <div class="h2 mt0">123,456</div>
+        <p class="text-nowrap mb0">网站访问量</p>
       </div>
-      <div nz-col nzMd="6" nzSm="24">
-        <nz-form-item>
-          <nz-form-label nzFor="gender">性别</nz-form-label>
-          <nz-form-control>
-            <nz-select [(ngModel)]="q.gender" name="gender" id="gender"  >
-              <nz-option nzLabel="男" nzValue="MALE"></nz-option>
-              <nz-option nzLabel="女" nzValue="FEMALE"></nz-option>
-              <nz-option nzLabel="保密" nzValue="UNKNOWN"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-
-      <div nz-col nzMd="12" nzSm="24"  class="text-right">
-        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-        <button nz-button type="reset" class="mx-sm">重置</button>
+      <div nz-col nzSpan="12">
+        <g2-mini-bar borderWidth="3" tooltipType="mini" color="#fff" height="35" [data]="miniBarData"> </g2-mini-bar>
       </div>
     </div>
-  </form>
+  </div>
 
-  <st [columns]="columns"></st>
+</div>
 
-</nz-card>
+<div nz-row>
+
+</div>
+
+<div nz-row>
+
+</div>

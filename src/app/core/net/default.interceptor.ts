@@ -78,7 +78,11 @@ export class DefaultInterceptor implements HttpInterceptor {
           }
           switch (body.code) {
             case 401:
-              return throwError(new HttpErrorResponse(Object.assign(ev, { status: body.code, statusText: body.msg })));
+              (this.injector.get(DA_SERVICE_TOKEN) as ITokenService).clear();
+              this.notice.error(`提示:`, body.msg);
+              this.goTo('/passport/login');
+              //把api返回的的msg字段以异常的形式抛出
+              return throwError(body.msg);
             case 400:  //请求的格式不正确
             case 403:  //拒绝访问
             case 404:  //资源不存在
@@ -86,7 +90,6 @@ export class DefaultInterceptor implements HttpInterceptor {
             case 500:
             default:
               this.notice.error("提示:", body.msg)
-              //抛出异常终止后续请求
               return throwError(null);
           }
 
@@ -125,13 +128,14 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 允许统一对请求错误处理
         if (event instanceof HttpResponseBase)
           return this.handleData(event);
-        // 若一切都正常，则后续操作
         return of(event);
       }),
-      catchError((err: HttpErrorResponse) => {
-        if (err != null) {
+      catchError((err) => {
+        //如果是Http自带的错误(4xx,5xx等错误码)，直接在这里处理了
+        if (err instanceof HttpErrorResponse) {
           return this.handleData(err)
         }
+        return of(null)
       }
       ),
     );

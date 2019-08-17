@@ -49,14 +49,11 @@ export class SysUserComponent implements OnInit {
     {
       title: '编辑',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
         {
           text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent, click: (record, modal) => { this.refresh(); }
         },
         {
-          text: '角色', icon: 'team', type: 'drawer', click: (record, modal) => {
-            this.message.info(modal);
-          }, drawer: {
+          text: '角色', icon: 'team', type: 'drawer', drawer: {
             component: SysUserRoleComponent, size: 300
           }
         },
@@ -72,7 +69,7 @@ export class SysUserComponent implements OnInit {
   ];
 
   constructor(private sysUserService: SysUserService, private modal: ModalHelper,
-              private message: NzMessageService, private notification: NzNotificationService) {
+    private message: NzMessageService, private notification: NzNotificationService) {
   }
 
 

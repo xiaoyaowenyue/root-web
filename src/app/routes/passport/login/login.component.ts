@@ -136,7 +136,7 @@ export class UserLoginComponent implements OnDestroy {
           this.router.navigateByUrl(url);
         });
       }, error => {
-        this.error = error;
+        console.log("登录失败:{}",error)
       });
   }
 
