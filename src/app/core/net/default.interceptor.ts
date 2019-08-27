@@ -11,7 +11,7 @@ import {
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
-import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService, NzModalRef } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
@@ -82,12 +82,11 @@ export class DefaultInterceptor implements HttpInterceptor {
               this.notice.error(`提示:`, body.msg);
               this.goTo('/passport/login');
               //把api返回的的msg字段以异常的形式抛出
-              return throwError(body.msg);
-            case 400:  //请求的格式不正确
+              return throwError(null);
             case 403:  //拒绝访问
             case 404:  //资源不存在
-            case 422:  //请求参数校验不通过
             case 500:
+            // this.goTo(`/exception/${body.code}`);
             default:
               this.notice.error("提示:", body.msg)
               return throwError(null);
@@ -135,7 +134,10 @@ export class DefaultInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           return this.handleData(err)
         }
-        return of(null)
+        if (err == null) {
+          return of(null);
+        }
+        return throwError(err)
       }
       ),
     );

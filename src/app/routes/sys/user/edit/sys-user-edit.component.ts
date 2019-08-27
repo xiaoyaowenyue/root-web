@@ -14,8 +14,7 @@ export class SysUserEditComponent implements OnInit {
   record: any = {};
 
   constructor(
-    private modal: NzModalRef,
-    private msgSrv: NzMessageService,
+    private ref: NzModalRef,
     public http: _HttpClient,
     private fb: FormBuilder,
     private sysUserService: SysUserService
@@ -32,11 +31,11 @@ export class SysUserEditComponent implements OnInit {
 
 
   close() {
-    this.modal.destroy();
+    this.ref.destroy();
   }
 
   //保存更改
-  submitForm(value) {
+  submitForm(value: { id: any; }) {
     value.id = this.record.id
     if (this.username.invalid || this.email.invalid) {
       this.username.markAsDirty();
@@ -45,8 +44,10 @@ export class SysUserEditComponent implements OnInit {
       this.email.updateValueAndValidity();
       return;
     }
-    this.sysUserService.putSysUser(value).subscribe(next => {
-      this.modal.close(next.msg);
+    this.sysUserService.update(value).subscribe(next => {
+      this.ref.close(next.msg);
+    }, err => {
+      this.ref.destroy()
     });
   }
 

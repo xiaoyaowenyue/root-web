@@ -5,6 +5,7 @@ import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificatio
 import { Result } from '@core/common/result';
 import { SysRoleService } from 'app/service/sys-role.service';
 import { SysRoleEditComponent } from './edit/sys-role-edit.component';
+import { SysRoleAddComponent } from './add/sys-role-add.component';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class SysRoleComponent implements OnInit {
       title: '编辑',
       buttons: [
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.refresh(); }
+          text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.message.success(modal); this.refresh(); }
         },
         // {
         // tslint:disable-next-line: max-line-length
@@ -68,7 +69,7 @@ export class SysRoleComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    this.sysRoleService.getSysRoles(this.q).subscribe((result) => {
+    this.sysRoleService.findSysRoles(this.q).subscribe((result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;
@@ -77,22 +78,21 @@ export class SysRoleComponent implements OnInit {
   }
 
   add() {
-    // this.modal.create(SysUserAddComponent).subscribe((result: Result) => {
-    //   if (result.code === 200) {
-    //     this.message.success(result.msg);
-    //     this.refresh();
-    //   } else {
-    //     this.notification.error('保存失败', result.msg);
-    //   }
-
-    // });
+    this.modal.create(SysRoleAddComponent).subscribe((result: Result) => {
+      if (result.code == 200) {
+        this.message.success(result.msg);
+        this.refresh();
+      } else {
+        this.notification.error("提示:", result.msg);
+      }
+    });
   }
 
   // 刷新
   refresh() {
-    // this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
-    //   this.data = result.data;
-    // });
+    this.sysRoleService.findSysRoles(this.q).subscribe((result: Result) => {
+      this.data = result.data;
+    });
   }
 
   onChange(ev: STChange) {
@@ -111,7 +111,7 @@ export class SysRoleComponent implements OnInit {
 
   // 批量删除
   deleteBatchIds() {
-    this.sysRoleService.deleteBatchByIds(this.checkedIds).subscribe(result => {
+    this.sysRoleService.deleteBatch(this.checkedIds).subscribe(result => {
       this.checkedIds = [];
       this.refresh();
     });

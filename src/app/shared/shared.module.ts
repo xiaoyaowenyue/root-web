@@ -10,7 +10,7 @@ import { DelonFormModule } from '@delon/form';
 import { DelonChartModule } from '@delon/chart';
 
 // #region third libs
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NzModalRef } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 const THIRDMODULES = [
   NgZorroAntdModule,

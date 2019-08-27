@@ -85,7 +85,7 @@ export class SysUserComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    return this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
+    return this.sysUserService.find(this.q).subscribe((result: Result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;
@@ -107,7 +107,7 @@ export class SysUserComponent implements OnInit {
 
   // 刷新
   refresh() {
-    this.sysUserService.getSysUsers(this.q).subscribe((result: Result) => {
+    this.sysUserService.find(this.q).subscribe((result: Result) => {
       this.data = result.data;
     });
   }
@@ -128,7 +128,7 @@ export class SysUserComponent implements OnInit {
 
   // 批量删除
   deleteBatchIds() {
-    this.sysUserService.deleteBatchByIds(this.checkedIds).subscribe(result => {
+    this.sysUserService.deleteBatch(this.checkedIds).subscribe(result => {
       this.checkedIds = [];
       this.refresh();
     });

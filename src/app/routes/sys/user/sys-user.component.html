@@ -23,8 +23,6 @@
 
       <div nz-col>
         <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
-        <button nz-popconfirm *ngIf="checkedIds.length>0" nz-button nzType="danger" nzTitle="确定删除选中的记录吗?"
-          (nzOnConfirm)="deleteBatchIds()">批量删除</button>
       </div>
 
     </div>
@@ -34,6 +32,11 @@
   <button nz-button [nzType]="'primary'" (click)="add()">
     <i nz-icon type="plus"></i>
     <span>新建</span>
+  </button>
+  <button nz-popconfirm *ngIf="checkedIds.length>0" nz-button nzType="danger" nzTitle="确定删除选中的记录吗?"
+    (nzOnConfirm)="deleteBatchIds()">
+    <i nz-icon type="delete"></i>
+    <span>批量删除</span>
   </button>
 
   <div class="my-md"></div>

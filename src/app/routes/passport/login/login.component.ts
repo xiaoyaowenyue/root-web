@@ -1,17 +1,17 @@
-import {SettingsService, _HttpClient} from '@delon/theme';
-import {Component, OnDestroy, Inject, Optional} from '@angular/core';
-import {Router} from '@angular/router';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import { SettingsService, _HttpClient } from '@delon/theme';
+import { Component, OnDestroy, Inject, Optional } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import {
   SocialService,
   SocialOpenType,
   ITokenService,
   DA_SERVICE_TOKEN,
 } from '@delon/auth';
-import {ReuseTabService} from '@delon/abc';
-import {environment} from '@env/environment';
-import {StartupService} from '@core';
+import { ReuseTabService } from '@delon/abc';
+import { environment } from '@env/environment';
+import { StartupService } from '@core';
 
 @Component({
   selector: 'passport-login',
@@ -40,7 +40,7 @@ export class UserLoginComponent implements OnDestroy {
   ) {
     this.form = fb.group({
       username: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      password: [null, [Validators.required,Validators.minLength(6)]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
       remember: [true],
@@ -79,8 +79,8 @@ export class UserLoginComponent implements OnDestroy {
 
   getCaptcha() {
     if (this.mobile.invalid) {
-      this.mobile.markAsDirty({onlySelf: true});
-      this.mobile.updateValueAndValidity({onlySelf: true});
+      this.mobile.markAsDirty({ onlySelf: true });
+      this.mobile.updateValueAndValidity({ onlySelf: true });
       return;
     }
     this.count = 59;
@@ -127,7 +127,7 @@ export class UserLoginComponent implements OnDestroy {
         // 清空路由复用信息
         this.reuseTabService.clear();
         // 设置用户Token信息
-        let tokenInfo = {"expireIn":res.data.expireIn,"token":res.data.accessToken}
+        let tokenInfo = { "expireIn": res.data.expireIn, "token": res.data.accessToken }
         this.tokenService.set(tokenInfo);
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().then(() => {
@@ -135,8 +135,6 @@ export class UserLoginComponent implements OnDestroy {
           if (url.includes('/passport')) url = '/';
           this.router.navigateByUrl(url);
         });
-      }, error => {
-        console.log("登录失败:{}",error)
       });
   }
 

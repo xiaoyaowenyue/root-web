@@ -33,8 +33,10 @@ export class SysUserAddComponent implements OnInit {
       this.email.updateValueAndValidity();
       return;
     }
-    this.sysUserService.saveSysUser(value).subscribe((result: Result) => {
+    this.sysUserService.add(value).subscribe((result: Result) => {
       this.ref.close(result);
+    }, err => {
+      this.ref.destroy();
     });
   }
   close() {

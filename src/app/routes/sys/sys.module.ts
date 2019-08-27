@@ -7,6 +7,7 @@ import { SysUserRoleComponent } from './user/user-role/sys-user-role.component';
 import { SysUserAddComponent } from './user/add/sys-user-add.component';
 import { SysRoleComponent } from './role/sys-role.component';
 import { SysRoleEditComponent } from './role/edit/sys-role-edit.component';
+import { SysRoleAddComponent } from './role/add/sys-role-add.component';
 
 const COMPONENTS = [
   SysUserComponent,
@@ -16,7 +17,8 @@ const COMPONENTS_NOROUNT = [
   SysUserAddComponent,
   SysUserEditComponent,
   SysUserRoleComponent,
-  SysRoleEditComponent
+  SysRoleEditComponent,
+  SysRoleAddComponent
 ];
 
 @NgModule({

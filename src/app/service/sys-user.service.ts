@@ -14,26 +14,26 @@ export class SysUserService {
   constructor(private http: _HttpClient) { }
 
   // 获取用户
-  getSysUsers(params?: any): Observable<Result> {
+  find(params?: any): Observable<Result> {
     return this.http.get<Result>(this.url, params);
   }
 
   // 获取用户角色
-  getSysUserRoles(userId: string): Observable<Result> {
+  findSysUserRoles(userId: string): Observable<Result> {
     return this.http.get(`${this.url}/${userId}/sysRoles`);
   }
 
   // 保存用户
-  saveSysUser(value: any) {
+  add(value: any) {
     return this.http.post(`${this.url}`, value);
   }
   // 保存用户的角色状态
-  postSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
+  updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
     return this.http.post(`${this.url}/${userId}/sysRoles`, roleIds);
   }
 
   // 修改用户
-  putSysUser(sysUser: any): Observable<Result> {
+  update(sysUser: any): Observable<Result> {
     return this.http.put(`${this.url}/${sysUser.id}`, sysUser);
   }
 
@@ -43,7 +43,7 @@ export class SysUserService {
   }
 
   // 批量删除
-  deleteBatchByIds(userIds: string[]) {
+  deleteBatch(userIds: string[]) {
     return this.http.delete(`${this.url}`, { ids: userIds });
   }
 

@@ -26,8 +26,8 @@ export class SysUserRoleComponent implements OnInit {
 
   ngOnInit(): void {
     zip(
-      this.sysRoleService.getAll(),
-      this.sysUserService.getSysUserRoles(this.record.id)
+      this.sysRoleService.findAll(),
+      this.sysUserService.findSysUserRoles(this.record.id)
     ).subscribe(([sysRoleResult, sysUserRoleResult]) => {
       let userRoleMap = new Map<string, any>();
       // 把用户拥有的角色映射成hashmap,避免使用双重for循环
@@ -57,7 +57,7 @@ export class SysUserRoleComponent implements OnInit {
     const roleIds: string[] = this.roles.filter(item => item.checked).map(item => {
       return item.value;
     });
-    this.sysUserService.postSysUserRoles(this.record.id, roleIds).subscribe(next => {
+    this.sysUserService.updateSysUserRoles(this.record.id, roleIds).subscribe(next => {
       this.ref.close('保存成功');
     });
   }
