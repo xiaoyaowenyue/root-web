@@ -82,14 +82,14 @@ export class DefaultInterceptor implements HttpInterceptor {
               this.notice.error(`提示:`, body.msg);
               this.goTo('/passport/login');
               //把api返回的的msg字段以异常的形式抛出
-              return throwError(null);
+              return throwError(body.msg);
             case 403:  //拒绝访问
             case 404:  //资源不存在
             case 500:
             // this.goTo(`/exception/${body.code}`);
             default:
               this.notice.error("提示:", body.msg)
-              return throwError(null);
+              return throwError(body.msg);
           }
 
         }
@@ -133,9 +133,6 @@ export class DefaultInterceptor implements HttpInterceptor {
         //如果是Http自带的错误(4xx,5xx等错误码)，直接在这里处理了
         if (err instanceof HttpErrorResponse) {
           return this.handleData(err)
-        }
-        if (err == null) {
-          return of(null);
         }
         return throwError(err)
       }
