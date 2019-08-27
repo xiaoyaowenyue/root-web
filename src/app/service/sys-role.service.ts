@@ -8,10 +8,10 @@ import { Result } from '@core/common/result';
 })
 export class SysRoleService {
   update(id: string, vo: { name: string, permissionIds: string[] }): Observable<Result> {
-    return this.http.put(`${this.url}/${id}`,vo);
+    return this.http.put(`${this.url}/${id}`, vo);
   }
-  add(name: string, checkIds: string[]): Observable<Result> {
-    return this.http.post(`${this.url}`, { "name": name, "permissionIds": checkIds });
+  add(name: string, permissionIds: string[], menuIds: string[]): Observable<Result> {
+    return this.http.post(`${this.url}`, { "name": name, "permissionIds": permissionIds, "menuIds": menuIds });
   }
 
 

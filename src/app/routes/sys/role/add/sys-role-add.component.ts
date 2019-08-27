@@ -41,7 +41,7 @@ export class SysRoleAddComponent implements OnInit {
     ).subscribe(([permissionResult, menuResult]) => {
       this.permissions = permissionResult.data;
       this.menus = menuResult.data;
-    },err=>{
+    }, err => {
       this.ref.destroy()
     })
 
@@ -62,17 +62,24 @@ export class SysRoleAddComponent implements OnInit {
 
   submitForm(value: { name: string; }) {
     let checkedPermissions: NzTreeNode[] = this.permissionTree.getCheckedNodeList()
-    let checkIds: string[] = []
-    checkedPermissions.forEach(v => {
-      this.extractIds(v, checkIds);
-    })
-    this.sysRoleService.add(value.name, checkIds).subscribe(res => {
+    let permissionIds: string[] = []
+    // 选中的权限id
+    checkedPermissions.forEach(v => this.extractIds(v, permissionIds))
+
+    // 收集选中和半选中得菜单id
+    let checkedMenus: NzTreeNode[] = this.menuTree.getCheckedNodeList();
+    let menusIds: string[] = []
+    checkedMenus.forEach(v => this.extractIds(v, menusIds));
+    this.menuTree.getHalfCheckedNodeList().forEach(v => this.extractIds(v, menusIds));
+
+    this.sysRoleService.add(value.name, permissionIds, menusIds).subscribe(res => {
       this.ref.close(res);
     }, err => {
       this.ref.destroy();
     })
   }
 
+  // 抽取树形节点的id以及子节点的id
   private extractIds(node: NzTreeNode, ids: string[]) {
     ids.push(node.key);
     if (node.children.length > 0) {
