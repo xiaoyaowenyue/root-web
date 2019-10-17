@@ -32,9 +32,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.router.events
       .pipe(filter(evt => evt instanceof NavigationEnd))
-      .subscribe(() => {
+      .subscribe((event) => {
         this.titleSrv.setTitle();
         this.modalSrv.closeAll();
+        // 路由日志打印
+        // console.log(event);
       });
   }
 }

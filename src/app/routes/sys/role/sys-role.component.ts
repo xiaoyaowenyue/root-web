@@ -38,7 +38,7 @@ export class SysRoleComponent implements OnInit {
       title: '编辑',
       buttons: [
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.message.success(modal); this.refresh(); }
+          text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.message.success(modal.msg); this.refresh(); }
         },
         // {
         // tslint:disable-next-line: max-line-length
@@ -69,7 +69,7 @@ export class SysRoleComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    this.sysRoleService.findSysRoles(this.q).subscribe((result) => {
+    this.sysRoleService.findByPage(this.q).subscribe((result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;
@@ -90,7 +90,7 @@ export class SysRoleComponent implements OnInit {
 
   // 刷新
   refresh() {
-    this.sysRoleService.findSysRoles(this.q).subscribe((result: Result) => {
+    this.sysRoleService.findByPage(this.q).subscribe((result: Result) => {
       this.data = result.data;
     });
   }

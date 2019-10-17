@@ -1,9 +1,9 @@
 import { Injectable, Injector, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { zip } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, User } from '@delon/theme';
+import { zip, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN, User, Menu } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenModel, ITokenService, JWTTokenModel } from '@delon/auth';
 import { ACLService } from '@delon/acl';
 import { NzIconService } from 'ng-zorro-antd';

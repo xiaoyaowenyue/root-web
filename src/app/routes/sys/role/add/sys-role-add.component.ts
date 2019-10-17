@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzTreeNodeOptions, NzModalRef, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SysPermissionService } from 'app/service/sys-permission.service';
-import { SysRoleService } from 'app/service/sys-role.service';
+import { SysRoleService, RoleRequest } from 'app/service/sys-role.service';
 import { SysMenuService } from 'app/service/sys-menu.service';
 import { zip, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -65,9 +65,9 @@ export class SysRoleAddComponent implements OnInit {
     let menuIds: string[] = []
     this.menuTree.getCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
     this.menuTree.getHalfCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
-    console.log(menuIds);
-    
-    this.sysRoleService.add(value.name, permissionIds, menuIds).subscribe(res => {
+
+    let roleAddRequest: RoleRequest = { name: value.name, permissionIds: permissionIds, menuIds: menuIds }
+    this.sysRoleService.add(roleAddRequest).subscribe(res => {
       this.ref.close(res);
     }, err => {
       this.ref.destroy();

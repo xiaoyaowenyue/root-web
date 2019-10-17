@@ -8,17 +8,21 @@ import { SysUserAddComponent } from './user/add/sys-user-add.component';
 import { SysRoleComponent } from './role/sys-role.component';
 import { SysRoleEditComponent } from './role/edit/sys-role-edit.component';
 import { SysRoleAddComponent } from './role/add/sys-role-add.component';
+import { MenuComponent } from './menu/menu.component';
+import { MenuModalComponent } from './menu/menu-modal.component';
 
 const COMPONENTS = [
   SysUserComponent,
-  SysRoleComponent
+  SysRoleComponent,
+  MenuComponent
 ];
 const COMPONENTS_NOROUNT = [
   SysUserAddComponent,
   SysUserEditComponent,
   SysUserRoleComponent,
   SysRoleEditComponent,
-  SysRoleAddComponent
+  SysRoleAddComponent,
+  MenuModalComponent
 ];
 
 @NgModule({

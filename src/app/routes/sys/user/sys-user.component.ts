@@ -14,7 +14,6 @@ import { SysUserAddComponent } from './add/sys-user-add.component';
   templateUrl: './sys-user.component.html',
 })
 export class SysUserComponent implements OnInit {
-
   // 选中的数据
   checkedIds: string[] = [];
 
@@ -37,8 +36,6 @@ export class SysUserComponent implements OnInit {
     { label: '女', value: 'FEMALE' },
     { label: '保密', value: 'UNKNOWN' }
   ];
-
-  @ViewChild('st') st: STComponent;
 
   columns: STColumn[] = [
     { title: '编号', type: 'checkbox', index: 'id' },
@@ -85,7 +82,7 @@ export class SysUserComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    return this.sysUserService.find(this.q).subscribe((result: Result) => {
+    return this.sysUserService.findByPage(this.q).subscribe((result: Result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;
@@ -107,7 +104,7 @@ export class SysUserComponent implements OnInit {
 
   // 刷新
   refresh() {
-    this.sysUserService.find(this.q).subscribe((result: Result) => {
+    this.sysUserService.findByPage(this.q).subscribe((result: Result) => {
       this.data = result.data;
     });
   }

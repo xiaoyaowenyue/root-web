@@ -14,19 +14,17 @@
   </nz-form-item>
 
   <div nz-row>
-    <div nz-col nzSpan="6" nzOffset="6">请分配系统权限</div>
-    <div nz-col nzSpan="6">请分配系统菜单</div>
+    <div nz-col [nzLg]="{'span':6,'offset':6}" [nzXs]="{'span':12}">请分配系统权限</div>
+    <div nz-col nzSpan="12">请分配系统菜单</div>
   </div>
   <div nz-row>
-    <div nz-col nzSpan="6" nzOffset="6">
+    <div nz-col [nzLg]="{'span':6,'offset':6}" [nzXs]="{'span':12}">
       <nz-tree #permissionTree nzAsyncData="false" nzCheckable [nzData]="permissions"></nz-tree>
     </div>
     <div nz-col nzSpan="12">
       <nz-tree #menuTree nzAsyncData="false" nzShowIcon="true" nzCheckable [nzData]="menus"></nz-tree>
     </div>
   </div>
-
-
 
   <div class="modal-footer">
     <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()" type="button">

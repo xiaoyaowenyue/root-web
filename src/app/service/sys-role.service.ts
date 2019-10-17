@@ -7,24 +7,25 @@ import { Result } from '@core/common/result';
   providedIn: 'root'
 })
 export class SysRoleService {
-  update(id: string, vo: { name: string, permissionIds: string[] }): Observable<Result> {
-    return this.http.put(`${this.url}/${id}`, vo);
-  }
-  add(name: string, permissionIds: string[], menuIds: string[]): Observable<Result> {
-    return this.http.post(`${this.url}`, { "name": name, "permissionIds": permissionIds, "menuIds": menuIds });
-  }
-
 
   constructor(private http: _HttpClient) { }
 
   url = '/api/v1/sysRoles';
 
-  delete(id: string) {
-    return this.http.delete(`${this.url}/${id}`);
+  findByPage(q: any): Observable<Result> {
+    return this.http.get(this.url, q);
   }
 
-  findSysRoles(q: any): Observable<Result> {
-    return this.http.get(this.url, q);
+  add(roleRequest: RoleRequest): Observable<Result> {
+    return this.http.post(`${this.url}`, roleRequest);
+  }
+
+  update(id: string, roleRequest: RoleRequest): Observable<Result> {
+    return this.http.put(`${this.url}/${id}`, roleRequest);
+  }
+
+  delete(id: string) {
+    return this.http.delete(`${this.url}/${id}`);
   }
 
   findAll(): Observable<Result> {
@@ -35,5 +36,10 @@ export class SysRoleService {
     return this.http.delete(this.url, { "ids": checkedIds });
   }
 
+}
 
+export interface RoleRequest {
+  name: string;
+  permissionIds: string[];
+  menuIds: string[];
 }
