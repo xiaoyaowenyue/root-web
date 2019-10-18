@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData } from '@delon/abc';
-import { SysUserEditComponent } from './edit/sys-user-edit.component';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
 import { Result } from '@core/common/result';
 import { SysUserService } from 'app/service/sys-user.service';
 import { SysUserRoleComponent } from './user-role/sys-user-role.component';
 import { SysUserAddComponent } from './add/sys-user-add.component';
+import { SysUserEditComponent } from './edit/sys-user-edit.component';
 
 
 @Component({
