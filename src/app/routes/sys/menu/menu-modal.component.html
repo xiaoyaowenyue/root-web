@@ -7,7 +7,8 @@
   <nz-form-item>
     <nz-form-label nzSpan="6" nzRequired nzFor="parent">请选择父级菜单</nz-form-label>
     <nz-form-control nzSpan="12">
-      <nz-cascader formControlName="parent" [nzOptions]="nzOptions" (ngModelChange)="onChanges($event)"></nz-cascader>
+      <nz-cascader formControlName="parent" [nzOptions]="nzOptions" [nzChangeOnSelect]="true" [nzExpandTrigger]="'hover'"
+      [nzDisabled]="disable"></nz-cascader>
       <nz-form-explain *ngIf="parent.dirty && parent.errors">
         请选择父级菜单！
       </nz-form-explain>
@@ -15,17 +16,17 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label nzSpan="6" nzRequired nzFor="menuName">菜单名</nz-form-label>
+    <nz-form-label nzSpan="6" nzRequired nzFor="text">菜单名</nz-form-label>
     <nz-form-control nzSpan="12">
-      <input nz-input formControlName="menuName" id="menuName" name="menuName" placeholder="请输入菜单名">
-      <nz-form-explain *ngIf="menuName.dirty && menuName.errors">
+      <input nz-input formControlName="text" id="text" name="text" placeholder="请输入菜单名">
+      <nz-form-explain *ngIf="text.dirty && text.errors">
         请输入菜单名！
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label nzSpan="6" nzFor="icon">图标编号</nz-form-label>
+    <nz-form-label nzSpan="6" nzFor="icon">二级菜单图标</nz-form-label>
     <nz-form-control nzSpan="12">
       <input nz-input formControlName="icon" id="icon" name="icon" placeholder="请输入图标编号">
     </nz-form-control>

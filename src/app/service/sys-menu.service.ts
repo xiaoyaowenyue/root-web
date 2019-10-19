@@ -12,15 +12,15 @@ export class SysMenuService {
 
     url = '/api/v1/sysMenus';
 
-    add() {
-
+    add(menu: SysMenu): Observable<Result> {
+        return this.http.post(this.url, menu);
     }
 
-    update() {
-
+    update(menu: SysMenu): Observable<Result> {
+        return this.http.put(`${this.url}/${menu.id}`, menu);
     }
 
-    delete(id: string) {
+    delete(id: string): Observable<Result> {
         return this.http.delete(`${this.url}/${id}`);
     }
 
@@ -33,7 +33,7 @@ export class SysMenuService {
         return this.http.get(`${this.url}`, params);
     }
 
-    deleteBatch(checkedIds: string[]) {
+    deleteBatch(checkedIds: string[]): Observable<Result> {
         return this.http.delete(this.url, { "ids": checkedIds });
     }
 
@@ -44,10 +44,21 @@ export class SysMenuService {
         return this.http.get(`${this.url}/tree`, { "roleId": roleId, "pid": pid });
     }
 
-    // 查找菜单级联关系
-    findMenuOptions(): Observable<Result> {
-        return this.http.get(`${this.url}/options`);
+    // 查找菜单选项
+    findMenuOptions(id: string): Observable<Result> {
+        return this.http.get(`${this.url}/options/tree`, { "id": id });
+    }
+    //递归查找当前菜单的所有父级菜单
+    findParentIds(id: string): Observable<Result> {
+        return this.http.get(`${this.url}/parents/id_list`, { "id": id });
     }
 
+}
 
+export interface SysMenu {
+    id: string;
+    pid: string;
+    text: string;
+    icon?: string;
+    link?: string;
 }

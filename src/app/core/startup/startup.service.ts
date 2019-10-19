@@ -54,7 +54,9 @@ export class StartupService {
       // application data
 
       // 用户信息：包括姓名、头像、邮箱地址
-      this.settingService.setUser(userInfo.data);
+      if (userInfo.data) {
+        this.settingService.setUser(userInfo.data);
+      }
       // this.settingService.setUser(res.user);
       // ACL：设置权限为全量
       this.aclService.setFull(true);

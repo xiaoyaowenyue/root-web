@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SysMenuService } from 'app/service/sys-menu.service';
-import { NzModalRef } from 'ng-zorro-antd';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { SysMenuService, SysMenu } from 'app/service/sys-menu.service';
+import { NzModalRef, CascaderOption, NzMessageService } from 'ng-zorro-antd';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-menu-modal',
@@ -10,35 +10,46 @@ import { CascaderOption } from 'ng-zorro-antd/cascader';
   styles: []
 })
 export class MenuModalComponent implements OnInit {
+
   validateForm: FormGroup;
   record: any = {};
   title: string;
 
-  constructor(private fb: FormBuilder, private menuService: SysMenuService, private ref: NzModalRef) { }
+  constructor(private fb: FormBuilder, private menuService: SysMenuService,
+    private ref: NzModalRef, private message: NzMessageService) { }
 
   // 级联菜单
   nzOptions: CascaderOption[] | null = null;
-  // 默认选中的父级菜单
-  defaultParent: string[] = ['0'];
-
+  disable: boolean = false;
 
   ngOnInit() {
     this.validateForm = this.fb.group(
       {
-        parent: [this.defaultParent, [Validators.required]], // 菜单级别
-        menuName: [null, [Validators.required]], //菜单名
-        link: [null], //图标编号
-        icon: [null], //链接
+        parent: [null, [Validators.required]], // 菜单级别
+        text: [this.record.text, [Validators.required]], //菜单名
+        link: [this.record.link], //图标编号
+        icon: [this.record.icon], //链接
       }
     );
 
     // 获取传来的组件参数
     this.title = this.ref.getInstance().nzComponentParams.title;
-
     //初始化级联菜单
-    this.menuService.findMenuOptions().subscribe(result => {
-      this.nzOptions = result.data;
-    })
+    let id = this.record.id;
+    if (id == undefined) {
+      id = "0";
+    }
+    zip(
+      this.menuService.findMenuOptions(id),
+      this.menuService.findParentIds(id)
+    ).subscribe(([options, parentLevel]) => {
+      this.nzOptions = options.data;
+      // 默认选中
+      this.validateForm.controls.parent.setValue(parentLevel.data);
+      if (this.record.id) {
+        this.disable = true; //编辑菜单时不允许修改父级菜单
+      }
+    });
 
 
   }
@@ -48,24 +59,37 @@ export class MenuModalComponent implements OnInit {
       this.parent.markAsDirty();
       this.parent.updateValueAndValidity();
       return;
-    } else if (this.menuName.invalid) {
-      this.menuName.markAsDirty();
-      this.menuName.updateValueAndValidity();
+    } else if (this.text.invalid) {
+      this.text.markAsDirty();
+      this.text.updateValueAndValidity();
       return;
     } else if (this.link.invalid) {
       this.link.markAsDirty();
       this.link.updateValueAndValidity();
       return;
     }
+
+    let pid = value.parent[value.parent.length - 1];
+
+    delete value.parent; //删除对象属性
+    // Object.assign相当于BeanUtils.copy，把后面对象的属性复制到第一个对象
+    let menu: SysMenu = Object.assign({}, value, { "pid": pid });
+
+    let id = this.record.id;
+    if (id == undefined) { // 新增菜单
+      this.menuService.add(menu).subscribe(result => {
+        this.ref.destroy(result);
+      });
+    } else {
+      menu.id = id;
+      this.menuService.update(menu).subscribe(result => {
+        this.ref.destroy(result);
+      });
+    }
   }
 
-  onChanges(values: string[]) {
-    console.log(values);
-
-  }
-
-  get menuName() {
-    return this.validateForm.controls.menuName;
+  get text() {
+    return this.validateForm.controls.text;
   }
   get parent() {
     return this.validateForm.controls.parent;
@@ -77,6 +101,7 @@ export class MenuModalComponent implements OnInit {
   get icon() {
     return this.validateForm.controls.icon;
   }
+
   close() {
     this.ref.close();
   }

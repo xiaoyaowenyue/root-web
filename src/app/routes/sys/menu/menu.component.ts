@@ -40,8 +40,8 @@ export class MenuComponent implements OnInit {
               return { "record": record, "title": "编辑菜单" };
             }
           },
-          // SysUserEditComponent的this.modal.close(next.msg)会返回一个值到这来;
-          click: (record, modal) => { this.message.success(modal); this.refresh(); }
+          // click: (record, modal) => { this.message.success(modal); this.query(); }
+          click: "reload"
         },
         {
           text: '删除', icon: 'delete', type: 'del', click: (record) => {
@@ -65,20 +65,12 @@ export class MenuComponent implements OnInit {
 
   add() {
     this.modal.create(MenuModalComponent, { "title": "新增菜单" }).subscribe((result: Result) => {
-      if (result.code === 200) {
+      if (result.code == 200) {
         this.message.success(result.msg);
-        this.refresh();
+        this.query();
       } else {
         this.notification.error('保存失败', result.msg);
       }
-
-    });
-  }
-
-  // 刷新
-  refresh() {
-    this.menuService.findByPage(this.q).subscribe((result: Result) => {
-      this.data = result.data;
     });
   }
 
