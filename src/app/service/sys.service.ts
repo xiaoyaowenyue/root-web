@@ -18,4 +18,10 @@ export class SysService {
   findMenus(): Observable<Result> {
     return this.http.get(this.url + "/menus");
   }
+
+  // 修改密码
+  updatePassword(password: string): Observable<Result> {
+    return this.http.put(`${this.url}/password`, { "password": password });
+  }
+
 }

@@ -54,14 +54,14 @@ export class StartupService {
       // application data
 
       // 用户信息：包括姓名、头像、邮箱地址
-      if (userInfo.data) {
+      if (userInfo.data != undefined) {
         this.settingService.setUser(userInfo.data);
       }
       // this.settingService.setUser(res.user);
       // ACL：设置权限为全量
       this.aclService.setFull(true);
       // 初始化菜单
-      if (menuData.data) {
+      if (menuData.data != undefined) {
         this.menuService.add(menuData.data);
       }
 

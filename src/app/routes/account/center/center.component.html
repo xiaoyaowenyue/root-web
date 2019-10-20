@@ -1,0 +1,39 @@
+<div nz-row nzGutter="24" class="py-lg">
+  <div nz-col nzMd="24" nzLg="7">
+    <nz-card [nzBordered]="false" class="mb-lg">
+      <ng-container>
+        <div class="avatarHolder">
+          <img src="{{ settings.user.avatar }}" />
+          <div class="name">{{ settings.user.username }}</div>
+          <nz-upload nzAction="" [nzShowUploadList]="false">
+            <button nz-button class="button_view">
+              <i nz-icon nzType="upload"></i>
+              <span>更换头像</span>
+            </button>
+          </nz-upload>
+        </div>
+
+        <div>
+          <input nz-input [(ngModel)]="password" id="password" name="password" placeholder="修改密码">
+        </div>
+        <button nz-button nzBlock nzType="primary" (click)="changePassword($event)">保存</button>
+
+        <nz-divider nzDashed></nz-divider>
+
+      </ng-container>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="24" nzLg="17">
+    <nz-card class="tabsCard" [nzBordered]="false" [nzTitle]="tabTpl">
+      <ng-template #tabTpl>
+        <nz-tabset nzSize="large" [nzSelectedIndex]="pos">
+          <nz-tab *ngFor="let i of tabs" [nzTitle]="i.tab" (nzClick)="to(i)"></nz-tab>
+        </nz-tabset>
+      </ng-template>
+      <router-outlet></router-outlet>
+    </nz-card>
+  </div>
+
+
+</div>

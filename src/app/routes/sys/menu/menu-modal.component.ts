@@ -12,7 +12,7 @@ import { zip } from 'rxjs';
 export class MenuModalComponent implements OnInit {
 
   validateForm: FormGroup;
-  record: any = {};
+  record: any = {}; // 固定写死
   title: string;
 
   constructor(private fb: FormBuilder, private menuService: SysMenuService,

@@ -76,7 +76,11 @@ export class MenuComponent implements OnInit {
 
   query() {
     this.menuService.findByPage(this.q).subscribe(result => {
-      this.data = result.data;
+      if (result.code == 200) {
+        this.data = result.data;
+      } else {
+        this.message.error(result.msg);
+      }
     });
   }
 

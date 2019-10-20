@@ -8,7 +8,6 @@ import { _HttpClient } from '@delon/theme';
 })
 export class SysUserService {
 
-
   url = '/api/v1/sysUsers';
 
   constructor(private http: _HttpClient) { }
@@ -34,8 +33,8 @@ export class SysUserService {
     return this.http.put(`${this.url}/${sysUser.id}`, sysUser);
   }
 
-   // 用户绑定角色
-   updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
+  // 用户绑定角色
+  updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
     return this.http.post(`${this.url}/${userId}/sysRoles`, roleIds);
   }
 

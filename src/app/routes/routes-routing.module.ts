@@ -18,13 +18,14 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
-    //canActivate: [JWTGuard ],
+    // canActivate: [JWTGuard ],
     children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardComponent, data: {title: '仪表盘'}},
       {path: 'exception', loadChildren: './exception/exception.module#ExceptionModule'},
-      //懒加载
+      // 懒加载
       {path: 'sys', loadChildren: './sys/sys.module#SysModule'},
+      {path: 'account', loadChildren: './account/account.module#AccountModule'},
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
     ]
