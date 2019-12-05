@@ -22,10 +22,10 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardComponent, data: {title: '仪表盘'}},
-      {path: 'exception', loadChildren: './exception/exception.module#ExceptionModule'},
+      {path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule)},
       // 懒加载
-      {path: 'sys', loadChildren: './sys/sys.module#SysModule'},
-      {path: 'account', loadChildren: './account/account.module#AccountModule'},
+      {path: 'sys', loadChildren: () => import('./sys/sys.module').then(m => m.SysModule)},
+      {path: 'account', loadChildren: () => import('./account/account.module').then(m => m.AccountModule)},
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
     ]
