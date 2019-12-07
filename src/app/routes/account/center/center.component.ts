@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SettingsService } from '@delon/theme';
 import { environment } from '@env/environment';
-import { SysUserService } from 'app/service/sys-user.service';
+import { SysUserService } from 'app/routes/sys/user/shared/sys-user.service';
 import { NzMessageService } from 'ng-zorro-antd';
-import { SysService } from 'app/service/sys.service';
+import { SysService } from 'app/routes/sys/sys.service';
 import { Router } from '@angular/router';
 
 @Component({

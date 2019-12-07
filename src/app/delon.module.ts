@@ -6,16 +6,7 @@ import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core
 import { throwIfAlreadyLoaded } from '@core';
 
 import { AlainThemeModule, } from '@delon/theme';
-
-// #region mock
-import { DelonMockModule } from '@delon/mock';
-import * as MOCKDATA from '../../_mock';
-import { environment } from '@env/environment';
-
-const MOCK_MODULES = !environment.production
-  ? [DelonMockModule.forRoot({ data: MOCKDATA })]
-  : [];
-// #endregion
+import { DelonACLModule } from '@delon/acl';
 
 // #region reuse-tab
 /**
@@ -29,8 +20,6 @@ const MOCK_MODULES = !environment.production
  *  </section>
  *  ```
  */
-import { RouteReuseStrategy } from '@angular/router';
-import { ReuseTabService, ReuseTabStrategy } from '@delon/abc/reuse-tab';
 
 const REUSETAB_PROVIDES = [
   // {
@@ -46,30 +35,30 @@ const REUSETAB_PROVIDES = [
 import { PageHeaderConfig } from '@delon/abc';
 
 export function fnPageHeaderConfig(): PageHeaderConfig {
-  let pageHeaderConfig = new PageHeaderConfig();
-  pageHeaderConfig.homeI18n = 'Alain'
-  pageHeaderConfig.autoTitle = false
-  return pageHeaderConfig
+  const pageHeaderConfig = new PageHeaderConfig();
+  pageHeaderConfig.homeI18n = 'Alain';
+  pageHeaderConfig.autoTitle = false;
+  return pageHeaderConfig;
 }
 
 import { DelonAuthConfig } from '@delon/auth';
 
 export function fnDelonAuthConfig(): DelonAuthConfig {
-  let authConfig = new DelonAuthConfig();
+  const authConfig = new DelonAuthConfig();
   authConfig.login_url = '/passport/login';
   authConfig.token_send_key = 'Authorization';
   authConfig.token_send_template = 'Bearer ${token}';
   authConfig.token_send_place = 'header';
-  return authConfig
+  return authConfig;
 }
 
 import { STConfig } from '@delon/abc';
 
 export function fnSTConfig(): STConfig {
-  let stConfig = new STConfig();
+  const stConfig = new STConfig();
   stConfig.req = { reName: { pi: 'page', ps: 'size' } };
   stConfig.modal = { size: 'lg', paramsName: 'record' };
-  stConfig.page.front = false
+  stConfig.page.front = false;
   return stConfig;
 }
 
@@ -86,7 +75,7 @@ const GLOBAL_CONFIG_PROVIDES = [
 @NgModule({
   imports: [
     AlainThemeModule.forRoot(),
-    ...MOCK_MODULES,
+    DelonACLModule.forRoot(),
   ],
 })
 export class DelonModule {

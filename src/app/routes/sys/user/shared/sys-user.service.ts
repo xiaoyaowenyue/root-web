@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Result } from '@core/common/result';
+import { Result } from '@shared/result';
 import { _HttpClient } from '@delon/theme';
+import { UserVO } from './user.vo';
+import { PageData } from '@shared/page-data';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,12 @@ export class SysUserService {
   constructor(private http: _HttpClient) { }
 
   // 获取用户
-  findByPage(params?: any): Observable<Result> {
-    return this.http.get<Result>(this.url, params);
+  findByPage(params?: any): Observable<Result<PageData<UserVO>>> {
+    return this.http.get<Result<PageData<UserVO>>>(this.url, params);
   }
 
   // 获取用户角色
-  findSysUserRoles(userId: string): Observable<Result> {
+  findSysUserRoles(userId: string): Observable<Result<any>> {
     return this.http.get(`${this.url}/${userId}/sysRoles`);
   }
 
@@ -29,17 +31,17 @@ export class SysUserService {
   }
 
   // 修改用户
-  update(sysUser: any): Observable<Result> {
+  update(sysUser: any): Observable<Result<any>> {
     return this.http.put(`${this.url}/${sysUser.id}`, sysUser);
   }
 
   // 用户绑定角色
-  updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result> {
+  updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result<any>> {
     return this.http.post(`${this.url}/${userId}/sysRoles`, roleIds);
   }
 
   // 删除用户
-  delete(userId: string): Observable<Result> {
+  delete(userId: string): Observable<Result<any>> {
     return this.http.delete(`${this.url}/${userId}`);
   }
 

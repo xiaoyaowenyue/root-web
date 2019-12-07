@@ -2,23 +2,23 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
-import { Result } from '@core/common/result';
-import { SysUserService } from 'app/service/sys-user.service';
-import { SysUserRoleComponent } from './user-role/sys-user-role.component';
-import { SysUserAddComponent } from './add/sys-user-add.component';
-import { SysUserEditComponent } from './edit/sys-user-edit.component';
+import { SysUserService } from 'app/routes/sys/user/shared/sys-user.service';
+import { UserRoleComponent } from './user-role/user-role.component';
+import { UserVO } from './shared/user.vo';
+import { PageData } from '@shared/page-data';
+import { UserModalComponent } from './modal/user-modal.component';
 
 
 @Component({
-  selector: 'app-sys-user',
-  templateUrl: './sys-user.component.html',
+  selector: 'sys-user',
+  templateUrl: './user.component.html',
 })
-export class SysUserComponent implements OnInit {
+export class UserComponent implements OnInit {
   // 选中的数据
   checkedIds: string[] = [];
 
   // 表格数据
-  data: any = [];
+  data: PageData<UserVO> = {};
 
   // 查询加载中
   loading = false;
@@ -47,19 +47,22 @@ export class SysUserComponent implements OnInit {
       title: '编辑',
       buttons: [
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysUserEditComponent,
-          // SysUserEditComponent的this.modal.close(next.msg)会返回一个值到这来;
+          text: '编辑', icon: 'edit', type: 'modal',
+          modal: {
+            component: UserModalComponent, params: (record) => ({ record, title: '编辑用户' }),
+            // SysUserEditComponent的this.modal.close(next.msg)会返回一个值到这来;
+          },
           click: (record, modal) => { this.message.success(modal); this.refresh(); }
         },
         {
           text: '角色', icon: 'team', type: 'drawer', drawer: {
-            component: SysUserRoleComponent, size: 300
+            component: UserRoleComponent, size: 300
           }
         },
         {
           text: '删除', icon: 'delete', type: 'del', click: (record) => {
             this.sysUserService.delete(record.id).subscribe((res) => {
-              this.message.success(res.msg)
+              this.message.success(res.msg);
               this.refresh();
             });
           }
@@ -68,8 +71,9 @@ export class SysUserComponent implements OnInit {
     }
   ];
 
-  constructor(private sysUserService: SysUserService, private modal: ModalHelper,
-    private message: NzMessageService, private notification: NzNotificationService) {
+  constructor(
+    private sysUserService: SysUserService, private modal: ModalHelper,
+    private message: NzMessageService) {
   }
 
 
@@ -82,7 +86,7 @@ export class SysUserComponent implements OnInit {
     this.loading = true;
     this.q.page = 1;
     this.checkedIds = [];
-    return this.sysUserService.findByPage(this.q).subscribe((result: Result) => {
+    return this.sysUserService.findByPage(this.q).subscribe((result) => {
       this.data = result.data;
       this.q.page = result.data.number;
       this.q.size = result.data.size;
@@ -91,20 +95,15 @@ export class SysUserComponent implements OnInit {
   }
 
   add() {
-    this.modal.create(SysUserAddComponent).subscribe((result: Result) => {
-      if (result.code === 200) {
-        this.message.success(result.msg);
-        this.refresh();
-      } else {
-        this.notification.error('保存失败', result.msg);
-      }
-
+    this.modal.create(UserModalComponent, { title: '新增用户' }).subscribe((result) => {
+      this.message.success(result.msg);
+      this.refresh();
     });
   }
 
   // 刷新
   refresh() {
-    this.sysUserService.findByPage(this.q).subscribe((result: Result) => {
+    this.sysUserService.findByPage(this.q).subscribe((result) => {
       this.data = result.data;
     });
   }

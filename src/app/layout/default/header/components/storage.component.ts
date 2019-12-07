@@ -4,11 +4,13 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'header-storage',
   template: `
-  <i nz-icon type="tool"></i>
+  <i nz-icon nzType="tool"></i>
   清理本地缓存
   `,
   host: {
-    '[class.d-block]': 'true',
+    // 给当前元素添加一个class，让他变成块级元素，
+    // 这样整个<header-storage>就能撑满父级元素，就能让用户很好的点击到它了
+    '[class.d-block]': 'true'
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })

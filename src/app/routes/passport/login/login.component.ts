@@ -1,38 +1,26 @@
-import { SettingsService, _HttpClient } from '@delon/theme';
+import { _HttpClient } from '@delon/theme';
 import { Component, OnDestroy, Inject, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import {
-  SocialService,
-  SocialOpenType,
   ITokenService,
   DA_SERVICE_TOKEN,
 } from '@delon/auth';
-import { ReuseTabService } from '@delon/abc';
-import { environment } from '@env/environment';
 import { StartupService } from '@core';
 
 @Component({
   selector: 'passport-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less'],
-  providers: [SocialService],
+  providers: [],
 })
 export class UserLoginComponent implements OnDestroy {
-  form: FormGroup;
-  error = '';
-  type = 0;
 
   constructor(
     fb: FormBuilder,
     modalSrv: NzModalService,
     private router: Router,
-    private settingsService: SettingsService,
-    private socialService: SocialService,
-    @Optional()
-    @Inject(ReuseTabService)
-    private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private startupSrv: StartupService,
     public http: _HttpClient,
@@ -65,17 +53,20 @@ export class UserLoginComponent implements OnDestroy {
   get captcha() {
     return this.form.controls.captcha;
   }
+  form: FormGroup;
+  mobileError = '';
+  type = 0;
+
+  // #region get captcha
+
+  count = 0;
+  interval$: any;
 
   // #endregion
 
   switch(ret: any) {
     this.type = ret.index;
   }
-
-  // #region get captcha
-
-  count = 0;
-  interval$: any;
 
   getCaptcha() {
     if (this.mobile.invalid) {
@@ -93,16 +84,15 @@ export class UserLoginComponent implements OnDestroy {
   // #endregion
 
   submit() {
-    this.error = '';
     let loginType = 'ACCOUNT';
     if (this.type === 0) {
-      this.username.markAsDirty();
+      this.username.markAsDirty(); // 标记为已修改
       this.username.updateValueAndValidity();
       this.password.markAsDirty();
       this.password.updateValueAndValidity();
       if (this.username.invalid || this.password.invalid) return;
     } else {
-      let loginType = 'CAPTCHA';
+      loginType = 'CAPTCHA';
       this.mobile.markAsDirty();
       this.mobile.updateValueAndValidity();
       this.captcha.markAsDirty();
@@ -114,20 +104,16 @@ export class UserLoginComponent implements OnDestroy {
     // 一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.http
       .post('/login', {
-        //type: this.type,
+        // type: this.type,
         type: loginType,
         username: this.username.value,
         password: this.password.value,
       })
       .subscribe((res: any) => {
-        if (res.code !== 200) {
-          this.error = res.msg;
-          return;
-        }
         // 清空路由复用信息
-        this.reuseTabService.clear();
+        // this.reuseTabService.clear();
         // 设置用户Token信息
-        let tokenInfo = { "expireIn": res.data.expireIn, "token": res.data.accessToken }
+        const tokenInfo = { expireIn: res.data.expireIn, token: res.data.accessToken };
         this.tokenService.set(tokenInfo);
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().then(() => {
@@ -135,57 +121,8 @@ export class UserLoginComponent implements OnDestroy {
           if (url.includes('/passport')) url = '/';
           this.router.navigateByUrl(url);
         });
-      }, err => {
-        console.error(err);
       });
   }
-
-  // #region social
-
-  open(type: string, openType: SocialOpenType = 'href') {
-    let url = ``;
-    let callback = ``;
-    if (environment.production) {
-      callback = 'https://ng-alain.github.io/ng-alain/#/callback/' + type;
-    } else {
-      callback = 'http://localhost:4200/#/callback/' + type;
-    }
-    switch (type) {
-      case 'auth0':
-        url = `//cipchk.auth0.com/login?client=8gcNydIDzGBYxzqV0Vm1CX_RXH-wsWo5&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-      case 'github':
-        url = `//github.com/login/oauth/authorize?client_id=9d6baae4b04a23fcafa2&response_type=code&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-      case 'weibo':
-        url = `https://api.weibo.com/oauth2/authorize?client_id=1239507802&response_type=code&redirect_uri=${decodeURIComponent(
-          callback,
-        )}`;
-        break;
-    }
-    if (openType === 'window') {
-      this.socialService
-        .login(url, '/', {
-          type: 'window',
-        })
-        .subscribe(res => {
-          if (res) {
-            this.settingsService.setUser(res);
-            this.router.navigateByUrl('/');
-          }
-        });
-    } else {
-      this.socialService.login(url, '/', {
-        type: 'href',
-      });
-    }
-  }
-
-  // #endregion
 
   ngOnDestroy(): void {
     if (this.interval$) clearInterval(this.interval$);

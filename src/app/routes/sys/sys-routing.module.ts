@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SysUserComponent } from './user/sys-user.component';
+import { UserComponent } from './user/user.component';
 import { SysRoleComponent } from './role/sys-role.component';
 import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
 
-  { path: 'user', component: SysUserComponent },
+  { path: 'user', component: UserComponent },
   { path: 'role', component: SysRoleComponent },
   { path: 'menu', component: MenuComponent }
 ];

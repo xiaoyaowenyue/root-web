@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared';
 import { SysRoutingModule } from './sys-routing.module';
-import { SysUserComponent } from './user/sys-user.component';
-import { SysUserRoleComponent } from './user/user-role/sys-user-role.component';
-import { SysUserAddComponent } from './user/add/sys-user-add.component';
+import { UserComponent } from './user/user.component';
+import { UserRoleComponent } from './user/user-role/user-role.component';
 import { SysRoleComponent } from './role/sys-role.component';
 import { SysRoleEditComponent } from './role/edit/sys-role-edit.component';
 import { SysRoleAddComponent } from './role/add/sys-role-add.component';
 import { MenuComponent } from './menu/menu.component';
 import { MenuModalComponent } from './menu/menu-modal.component';
-import { SysUserEditComponent } from './user/edit/sys-user-edit.component';
+import { PermissionComponent } from './permission/permission.component';
+import { UserModalComponent } from './user/modal/user-modal.component';
 
 const COMPONENTS = [
-  SysUserComponent,
+  UserComponent,
   SysRoleComponent,
-  MenuComponent
+  MenuComponent,
+  PermissionComponent
 ];
 const COMPONENTS_NOROUNT = [
-  SysUserAddComponent,
-  SysUserEditComponent,
-  SysUserRoleComponent,
+  UserRoleComponent,
   SysRoleEditComponent,
   SysRoleAddComponent,
-  MenuModalComponent
+  MenuModalComponent,
+  UserModalComponent // 用户新增、编辑时弹出的模态框
 ];
 
 @NgModule({
@@ -32,7 +32,7 @@ const COMPONENTS_NOROUNT = [
   ],
   declarations: [
     ...COMPONENTS,
-    ...COMPONENTS_NOROUNT
+    ...COMPONENTS_NOROUNT,
   ],
   entryComponents: COMPONENTS_NOROUNT
 })

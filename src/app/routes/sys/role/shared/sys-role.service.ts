@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
-import { Result } from '@core/common/result';
+import { Result } from '@shared/result';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,15 @@ export class SysRoleService {
 
   url = '/api/v1/sysRoles';
 
-  findByPage(q: any): Observable<Result> {
+  findByPage(q: any): Observable<Result<any>> {
     return this.http.get(this.url, q);
   }
 
-  add(roleRequest: RoleRequest): Observable<Result> {
+  add(roleRequest: RoleRequest): Observable<Result<any>> {
     return this.http.post(`${this.url}`, roleRequest);
   }
 
-  update(id: string, roleRequest: RoleRequest): Observable<Result> {
+  update(id: string, roleRequest: RoleRequest): Observable<Result<any>> {
     return this.http.put(`${this.url}/${id}`, roleRequest);
   }
 
@@ -28,7 +28,7 @@ export class SysRoleService {
     return this.http.delete(`${this.url}/${id}`);
   }
 
-  findAll(): Observable<Result> {
+  findAll(): Observable<Result<any>> {
     return this.http.get(`${this.url}/list`);
   }
 

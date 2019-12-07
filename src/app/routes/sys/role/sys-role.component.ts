@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
-import { Result } from '@core/common/result';
-import { SysRoleService } from 'app/service/sys-role.service';
+import { Result } from '@shared/result';
+import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
 import { SysRoleEditComponent } from './edit/sys-role-edit.component';
 import { SysRoleAddComponent } from './add/sys-role-add.component';
 
@@ -29,7 +29,7 @@ export class SysRoleComponent implements OnInit {
     page: 1
   };
 
-  @ViewChild('st') st: STComponent;
+  @ViewChild('st', { static: true }) st: STComponent;
 
   columns: STColumn[] = [
     { title: '编号', type: 'checkbox', index: 'id' },
@@ -56,7 +56,7 @@ export class SysRoleComponent implements OnInit {
   ];
 
   constructor(private sysRoleService: SysRoleService, private modal: ModalHelper,
-    private message: NzMessageService, private notification: NzNotificationService) {
+              private message: NzMessageService, private notification: NzNotificationService) {
   }
 
 
@@ -78,19 +78,19 @@ export class SysRoleComponent implements OnInit {
   }
 
   add() {
-    this.modal.create(SysRoleAddComponent).subscribe((result: Result) => {
-      if (result.code == 200) {
+    this.modal.create(SysRoleAddComponent).subscribe((result) => {
+      if (result.code === 200) {
         this.message.success(result.msg);
         this.refresh();
       } else {
-        this.notification.error("提示:", result.msg);
+        this.notification.error('提示:', result.msg);
       }
     });
   }
 
   // 刷新
   refresh() {
-    this.sysRoleService.findByPage(this.q).subscribe((result: Result) => {
+    this.sysRoleService.findByPage(this.q).subscribe((result) => {
       this.data = result.data;
     });
   }

@@ -21,27 +21,26 @@
         </nz-form-item>
       </div>
 
-      <div nz-col>
-        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+      <div nz-col nzSpan="8">
+        <button nz-button [nzType]="'primary'" type="submit" [nzLoading]="loading"><i nz-icon
+            nzType="search"></i>查询</button>
       </div>
 
     </div>
 
   </form>
 
-  <button nz-button [nzType]="'primary'" (click)="add()">
-    <i nz-icon type="plus"></i>
+  <button class="mg-top" nz-button [nzType]="'primary'" (click)="add()">
+    <i nz-icon nzType="plus"></i>
     <span>新建</span>
   </button>
   <button nz-popconfirm *ngIf="checkedIds.length>0" nz-button nzType="danger" nzTitle="确定删除选中的记录吗?"
     (nzOnConfirm)="deleteBatchIds()">
-    <i nz-icon type="delete"></i>
+    <i nz-icon nzType="delete"></i>
     <span>批量删除</span>
   </button>
 
-  <div class="my-md"></div>
-
-  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="q.page" [ps]="q.size"
+  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="data.number" [ps]="data.size"
     (change)="onChange($event)"></st>
 
 </nz-card>

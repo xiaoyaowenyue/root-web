@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
-import { Result } from '@core/common/result';
+import { Result } from '@shared/result';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ export class SysPermissionService {
     }
 
 
-    findAll(): Observable<Result> {
+    findAll(): Observable<Result<any>> {
         return this.http.get(`${this.url}/list`);
     }
 
@@ -29,8 +29,8 @@ export class SysPermissionService {
     /**
      * 查找角色拥有的权限
      */
-    findRolePermissions(roleId: string, pid: string): Observable<Result> {
-        return this.http.get(`${this.url}/tree`, { "roleId": roleId, "pid": pid });
+    findRolePermissions(roleId: string, pid: string): Observable<Result<any>> {
+        return this.http.get(`${this.url}/tree`, { roleId, pid });
     }
 
 

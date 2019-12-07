@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService, NzDrawerRef } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { SysRoleService } from 'app/service/sys-role.service';
-import { SysUserService } from 'app/service/sys-user.service';
+import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
+import { SysUserService } from 'app/routes/sys/user/shared/sys-user.service';
 import { zip } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { stringify } from '@angular/core/src/render3/util';
 
 @Component({
-  selector: 'app-sys-user-role',
-  templateUrl: './sys-user-role.component.html',
+  selector: 'sys-user-role',
+  templateUrl: './user-role.component.html',
 })
-export class SysUserRoleComponent implements OnInit {
+export class UserRoleComponent implements OnInit {
   record: any = {};
 
   roles = [];
@@ -29,13 +28,13 @@ export class SysUserRoleComponent implements OnInit {
       this.sysRoleService.findAll(),
       this.sysUserService.findSysUserRoles(this.record.id)
     ).subscribe(([sysRoleResult, sysUserRoleResult]) => {
-      let userRoleMap = new Map<string, any>();
+      const userRoleMap = new Map<string, any>();
       // 把用户拥有的角色映射成hashmap,避免使用双重for循环
       (sysUserRoleResult.data as Array<any>).forEach(value => {
         userRoleMap.set(value.id, value);
       });
-      for (let item of sysRoleResult.data) {
-        //判断用户是否拥有这个角色，如果拥有，那就打勾
+      for (const item of sysRoleResult.data) {
+        // 判断用户是否拥有这个角色，如果拥有，那就打勾
         if (userRoleMap.get(item.id) != undefined) {
           item.checked = true;
         } else {
@@ -44,9 +43,9 @@ export class SysUserRoleComponent implements OnInit {
         this.roles.push({ label: item.name, value: item.id, checked: item.checked });
       }
       if (sysRoleResult.data.length == sysUserRoleResult.data.length) {
-        this.allChecked = true
+        this.allChecked = true;
       } else {
-        this.allChecked = false
+        this.allChecked = false;
       }
     });
 

@@ -17,12 +17,12 @@ export class HeaderFullScreenComponent {
 
   @HostListener('window:resize')
   _resize() {
-    this.status = screenfull.isFullscreen;
+    this.status = (screenfull as screenfull.Screenfull).isFullscreen;
   }
 
   @HostListener('click')
   _click() {
-    if (screenfull.enabled) {
+    if (screenfull.isEnabled) {
       screenfull.toggle();
     }
   }

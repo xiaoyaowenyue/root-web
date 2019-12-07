@@ -2,19 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzMessageService, NzTreeNode, NzTreeComponent } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SysRoleService, RoleRequest } from 'app/service/sys-role.service';
-import { SysPermissionService } from 'app/service/sys-permission.service';
+import { SysRoleService, RoleRequest } from 'app/routes/sys/role/shared/sys-role.service';
+import { SysPermissionService } from 'app/routes/sys/permission/shared/sys-permission.service';
 import { zip } from 'rxjs';
-import { SysMenuService } from 'app/service/sys-menu.service';
+import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 
 @Component({
   selector: 'app-sys-role-edit',
   templateUrl: './sys-role-edit.component.html',
 })
 export class SysRoleEditComponent implements OnInit {
-  @ViewChild('permissionTree')
+  @ViewChild('permissionTree', {static: true})
   permissionTree: NzTreeComponent;
-  @ViewChild('menuTree')
+  @ViewChild('menuTree', {static: true})
   menuTree: NzTreeComponent;
   validateForm: FormGroup;
   record: any = {};
@@ -35,14 +35,14 @@ export class SysRoleEditComponent implements OnInit {
       name: [this.record.name, [Validators.required]],
     });
     zip(
-      this.permissionService.findRolePermissions(this.record.id, "0"),
-      this.menuService.findRoleMenus(this.record.id, "0")
+      this.permissionService.findRolePermissions(this.record.id, '0'),
+      this.menuService.findRoleMenus(this.record.id, '0')
     ).subscribe(([permissionResult, menuResult]) => {
       this.permissions = permissionResult.data;
       this.menus = menuResult.data;
     }, err => {
-      this.ref.destroy()
-    })
+      this.ref.destroy();
+    });
   }
 
   get name() {
@@ -50,7 +50,7 @@ export class SysRoleEditComponent implements OnInit {
   }
 
   save(value: any) {
-    this.ref.close("success");
+    this.ref.close('success');
   }
 
   close() {
@@ -59,26 +59,26 @@ export class SysRoleEditComponent implements OnInit {
 
   submitForm(value: { name: string }) {
     // 选中的权限id
-    let permissionIds: string[] = [];
+    const permissionIds: string[] = [];
     this.permissionTree.getCheckedNodeList().forEach(node => this.extractIds(node, permissionIds));
 
     // 收集选中和半选中得菜单id
-    let menuIds: string[] = []
+    const menuIds: string[] = [];
     this.menuTree.getCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
     this.menuTree.getHalfCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
 
-    let roleAddRequest: RoleRequest = { name: value.name, permissionIds: permissionIds, menuIds: menuIds }
+    const roleAddRequest: RoleRequest = { name: value.name, permissionIds, menuIds };
     this.sysRoleService.update(this.record.id, roleAddRequest).subscribe(res => {
       this.ref.close(res);
     }, err => {
       this.ref.destroy();
-    })
+    });
   }
 
   private extractIds(node: NzTreeNode, ids: string[]) {
     ids.push(node.key);
     if (node.children.length > 0) {
-      for (let n of node.children) {
+      for (const n of node.children) {
         this.extractIds(n, ids);
       }
     }

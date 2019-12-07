@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SysMenuService } from 'app/service/sys-menu.service';
+import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 import { STChange, STColumn } from '@delon/abc';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { ModalHelper } from '@delon/theme';
-import { Result } from '@core/common/result';
+import { Result } from '@shared/result';
 import { MenuModalComponent } from './menu-modal.component';
 
 @Component({
@@ -13,13 +13,13 @@ import { MenuModalComponent } from './menu-modal.component';
 })
 export class MenuComponent implements OnInit {
 
-  checkedIds: string[] = []
+  checkedIds: string[] = [];
 
   q: any = {
-    text: "",
+    text: '',
     page: 1,
     size: 10
-  }
+  };
 
   // 表格数据
   data: any = [];
@@ -27,7 +27,7 @@ export class MenuComponent implements OnInit {
   columns: STColumn[] = [
     { title: '编号', type: 'checkbox', index: 'id' },
     { title: 'id', index: 'id' },
-    { title: '图标', render: "menu_icon" },
+    { title: '图标', render: 'menu_icon' },
     { title: '菜单', index: 'text' },
     { title: '链接', index: 'link' },
     {
@@ -37,16 +37,16 @@ export class MenuComponent implements OnInit {
           text: '编辑', icon: 'edit', type: 'modal',
           modal: {
             component: MenuModalComponent, params: (record) => {
-              return { "record": record, "title": "编辑菜单" };
+              return { record, title: '编辑菜单' };
             }
           },
           // click: (record, modal) => { this.message.success(modal); this.query(); }
-          click: "reload"
+          click: 'reload'
         },
         {
           text: '删除', icon: 'delete', type: 'del', click: (record) => {
             this.menuService.delete(record.id).subscribe((res) => {
-              this.message.success(res.msg)
+              this.message.success(res.msg);
               this.query();
             });
           }
@@ -57,15 +57,15 @@ export class MenuComponent implements OnInit {
 
 
   constructor(private menuService: SysMenuService, private modal: ModalHelper,
-    private message: NzMessageService, private notification: NzNotificationService) { }
+              private message: NzMessageService, private notification: NzNotificationService) { }
 
   ngOnInit() {
     this.query();
   }
 
   add() {
-    this.modal.create(MenuModalComponent, { "title": "新增菜单" }).subscribe((result: Result) => {
-      if (result.code == 200) {
+    this.modal.create(MenuModalComponent, { title: '新增菜单' }).subscribe((result) => {
+      if (result.code === 200) {
         this.message.success(result.msg);
         this.query();
       } else {
@@ -76,7 +76,7 @@ export class MenuComponent implements OnInit {
 
   query() {
     this.menuService.findByPage(this.q).subscribe(result => {
-      if (result.code == 200) {
+      if (result.code === 200) {
         this.data = result.data;
       } else {
         this.message.error(result.msg);
@@ -86,9 +86,9 @@ export class MenuComponent implements OnInit {
 
   deleteBatchIds() {
     this.menuService.deleteBatch(this.checkedIds).subscribe(res => {
-      this.checkedIds = []
+      this.checkedIds = [];
       this.query();
-    })
+    });
   }
 
   onChange(ev: STChange) {

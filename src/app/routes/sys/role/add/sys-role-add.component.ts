@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzTreeNodeOptions, NzModalRef, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SysPermissionService } from 'app/service/sys-permission.service';
-import { SysRoleService, RoleRequest } from 'app/service/sys-role.service';
-import { SysMenuService } from 'app/service/sys-menu.service';
+import { SysPermissionService } from 'app/routes/sys/permission/shared/sys-permission.service';
+import { SysRoleService, RoleRequest } from 'app/routes/sys/role/shared/sys-role.service';
+import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 import { zip, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -13,9 +13,9 @@ import { mergeMap } from 'rxjs/operators';
   styles: []
 })
 export class SysRoleAddComponent implements OnInit {
-  @ViewChild('permissionTree')
+  @ViewChild('permissionTree',{static:true})
   permissionTree: NzTreeComponent;
-  @ViewChild('menuTree')
+  @ViewChild('menuTree',{static:true})
   menuTree: NzTreeComponent;
 
   record: any = {}
