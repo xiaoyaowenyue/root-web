@@ -1,42 +1,44 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NzModalRef, NzMessageService, NzTreeNode, NzTreeComponent } from 'ng-zorro-antd';
+import { NzModalRef, NzMessageService, NzTreeComponent, NzTreeNodeOptions, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SysRoleService, RoleRequest } from 'app/routes/sys/role/shared/sys-role.service';
-import { SysPermissionService } from 'app/routes/sys/permission/shared/sys-permission.service';
+import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
 import { zip } from 'rxjs';
 import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
+import { RoleRequest } from '../shared/role-request';
+import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-sys-role-edit',
-  templateUrl: './sys-role-edit.component.html',
+  selector: 'sys-role-modal',
+  templateUrl: './role-modal.component.html',
 })
-export class SysRoleEditComponent implements OnInit {
-  @ViewChild('permissionTree', {static: true})
+export class RoleModalComponent implements OnInit {
+  @ViewChild('permissionTree', { static: true })
   permissionTree: NzTreeComponent;
-  @ViewChild('menuTree', {static: true})
+  @ViewChild('menuTree', { static: true })
   menuTree: NzTreeComponent;
-  validateForm: FormGroup;
-  record: any = {};
-  permissions: NzTreeNode[] = [];
-  menus: NzTreeNode[] = [];
+  formGroup: FormGroup;
+  record: any = {}; // 从RoleComponent传过来
+  title: string; // 从RoleComponent传过来
+  permissions: NzTreeNodeOptions[] = [];
+  menus: NzTreeNodeOptions[] = [];
 
   constructor(
     private ref: NzModalRef,
     public http: _HttpClient,
     private fb: FormBuilder,
     private sysRoleService: SysRoleService,
-    private permissionService: SysPermissionService,
     private menuService: SysMenuService
   ) { }
 
   ngOnInit(): void {
-    this.validateForm = this.fb.group({
+
+    this.formGroup = this.fb.group({
       name: [this.record.name, [Validators.required]],
     });
     zip(
-      this.permissionService.findRolePermissions(this.record.id, '0'),
-      this.menuService.findRoleMenus(this.record.id, '0')
+      this.sysRoleService.findRolePermissions(this.record.id),
+      this.menuService.findRoleMenus(this.record.id)
     ).subscribe(([permissionResult, menuResult]) => {
       this.permissions = permissionResult.data;
       this.menus = menuResult.data;
@@ -46,12 +48,9 @@ export class SysRoleEditComponent implements OnInit {
   }
 
   get name() {
-    return this.validateForm.controls.name;
+    return this.formGroup.controls.name;
   }
 
-  save(value: any) {
-    this.ref.close('success');
-  }
 
   close() {
     this.ref.destroy();
@@ -62,20 +61,25 @@ export class SysRoleEditComponent implements OnInit {
     const permissionIds: string[] = [];
     this.permissionTree.getCheckedNodeList().forEach(node => this.extractIds(node, permissionIds));
 
-    // 收集选中和半选中得菜单id
+    // 收集选中和半选中的菜单id
     const menuIds: string[] = [];
     this.menuTree.getCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
     this.menuTree.getHalfCheckedNodeList().forEach(node => this.extractIds(node, menuIds));
 
-    const roleAddRequest: RoleRequest = { name: value.name, permissionIds, menuIds };
-    this.sysRoleService.update(this.record.id, roleAddRequest).subscribe(res => {
-      this.ref.close(res);
-    }, err => {
-      this.ref.destroy();
-    });
+    const roleRequest: RoleRequest = { name: value.name, permissionIds, menuIds };
+    if (this.record.id === undefined) {
+      this.sysRoleService.add(roleRequest).subscribe(res => {
+        this.ref.close(res);
+      })
+    } else {
+      this.sysRoleService.update(this.record.id, roleRequest).subscribe(res => {
+        this.ref.close(res);
+      });
+    }
+
   }
 
-  private extractIds(node: NzTreeNode, ids: string[]) {
+  private extractIds(node: NzTreeNodeOptions, ids: string[]) {
     ids.push(node.key);
     if (node.children.length > 0) {
       for (const n of node.children) {

@@ -38,10 +38,10 @@ export class SysMenuService {
     }
 
     /**
-     * 查找角色拥有的菜单
+     * 查找角色菜单
      */
-    findRoleMenus(roleId: string, pid: string): Observable<Result<any>> {
-        return this.http.get(`${this.url}/tree`, { roleId, pid });
+    findRoleMenus(roleId: string): Observable<Result<any>> {
+        return this.http.get(`${this.url}/role_menu`, { roleId });
     }
 
     // 查找菜单选项

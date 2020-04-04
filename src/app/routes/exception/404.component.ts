@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'exception-404',

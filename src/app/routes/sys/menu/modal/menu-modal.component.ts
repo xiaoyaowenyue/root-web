@@ -12,11 +12,11 @@ import { zip } from 'rxjs';
 export class MenuModalComponent implements OnInit {
 
   validateForm: FormGroup;
-  record: any = {}; // 固定写死
-  title: string;
+  record: any = {}; // 从MenuComponent传过来
+  title: string; // 从MenuComponent传过来
 
   constructor(private fb: FormBuilder, private menuService: SysMenuService,
-              private ref: NzModalRef, private message: NzMessageService) { }
+              private ref: NzModalRef) { }
 
   // 级联菜单
   nzOptions: CascaderOption[] | null = null;
@@ -32,8 +32,6 @@ export class MenuModalComponent implements OnInit {
       }
     );
 
-    // 获取传来的组件参数
-    this.title = this.ref.getInstance().nzComponentParams.title;
     // 初始化级联菜单
     let id = this.record.id;
     if (id == undefined) {

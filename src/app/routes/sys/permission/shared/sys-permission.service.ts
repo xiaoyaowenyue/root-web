@@ -17,6 +17,10 @@ export class SysPermissionService {
         return this.http.delete(`${this.url}/${id}`);
     }
 
+    findByPage(query: any) {
+        return this.http.get(`${this.url}`, query);
+    }
+
 
     findAll(): Observable<Result<any>> {
         return this.http.get(`${this.url}/list`);
@@ -25,13 +29,5 @@ export class SysPermissionService {
     deleteBatch(checkedIds: string[]) {
         return this.http.delete(this.url, checkedIds);
     }
-
-    /**
-     * 查找角色拥有的权限
-     */
-    findRolePermissions(roleId: string, pid: string): Observable<Result<any>> {
-        return this.http.get(`${this.url}/tree`, { roleId, pid });
-    }
-
 
 }

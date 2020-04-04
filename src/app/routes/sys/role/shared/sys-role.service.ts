@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 import { Result } from '@shared/result';
+import { RoleRequest } from './role-request';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,9 @@ export class SysRoleService {
     return this.http.delete(this.url, { "ids": checkedIds });
   }
 
-}
+  // 查找角色权限
+  findRolePermissions(id: any): Observable<Result<any>> {
+    return this.http.get(`${this.url}/role_permissions`, { id })
+  }
 
-export interface RoleRequest {
-  name: string;
-  permissionIds: string[];
-  menuIds: string[];
 }

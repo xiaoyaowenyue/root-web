@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './user/user.component';
-import { SysRoleComponent } from './role/sys-role.component';
+import { SysRoleComponent } from './role/role.component';
 import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [

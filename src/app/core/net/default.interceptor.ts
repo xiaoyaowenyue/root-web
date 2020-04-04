@@ -74,7 +74,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         if (ev instanceof HttpResponse) {
           const body: any = ev.body;
           if (body.code >= 200 && body.code < 300) {
-            break;
+            return of(ev)
           }
           switch (body.code) {
             case 401:
@@ -106,7 +106,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         break;
       default:
         if (ev instanceof HttpErrorResponse) {
-          console.warn('未可知错误，大部分是由于后端不支持CORS或无效配置引起', ev);
+          console.warn('未可知错误', ev);
           return throwError(ev);
         }
         break;
@@ -132,7 +132,7 @@ export class DefaultInterceptor implements HttpInterceptor {
       catchError((err) => {
         // 如果是Http自带的错误(4xx,5xx等错误码)，直接在这里处理了
         if (err instanceof HttpErrorResponse) {
-          return this.handleData(err);
+          this.handleData(err);
         }
         return throwError(err);
       }

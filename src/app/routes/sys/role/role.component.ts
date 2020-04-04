@@ -4,13 +4,12 @@ import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
 import { Result } from '@shared/result';
 import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
-import { SysRoleEditComponent } from './edit/sys-role-edit.component';
-import { SysRoleAddComponent } from './add/sys-role-add.component';
+import { RoleModalComponent } from './modal/role-modal.component';
 
 
 @Component({
-  selector: 'app-sys-role',
-  templateUrl: './sys-role.component.html',
+  selector: 'sys-role',
+  templateUrl: './role.component.html',
 })
 export class SysRoleComponent implements OnInit {
 
@@ -18,7 +17,7 @@ export class SysRoleComponent implements OnInit {
   checkedIds: string[] = [];
 
   // 表格数据
-  data: any = [];
+  data: any = {};
 
   // 查询加载中
   loading = false;
@@ -38,7 +37,12 @@ export class SysRoleComponent implements OnInit {
       title: '编辑',
       buttons: [
         {
-          text: '编辑', icon: 'edit', type: 'modal', component: SysRoleEditComponent, click: (record, modal) => { this.message.success(modal.msg); this.refresh(); }
+          text: '编辑', icon: 'edit', type: 'modal',
+          modal: {
+            component: RoleModalComponent,
+            params: (record) => ({ record, title: '编辑角色' })
+          },
+          click: (record, modal) => { this.message.success(modal.msg); this.refresh(); }
         },
         // {
         // tslint:disable-next-line: max-line-length
@@ -56,7 +60,7 @@ export class SysRoleComponent implements OnInit {
   ];
 
   constructor(private sysRoleService: SysRoleService, private modal: ModalHelper,
-              private message: NzMessageService, private notification: NzNotificationService) {
+    private message: NzMessageService, private notification: NzNotificationService) {
   }
 
 
@@ -78,13 +82,9 @@ export class SysRoleComponent implements OnInit {
   }
 
   add() {
-    this.modal.create(SysRoleAddComponent).subscribe((result) => {
-      if (result.code === 200) {
-        this.message.success(result.msg);
-        this.refresh();
-      } else {
-        this.notification.error('提示:', result.msg);
-      }
+    this.modal.create(RoleModalComponent, { title: '新增角色' }).subscribe((result) => {
+      this.message.success(result.msg);
+      this.refresh();
     });
   }
 

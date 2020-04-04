@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <div class="modal-title">{{title}}</div>
+  </div>
+  
+  <form nz-form [formGroup]="formGroup" (ngSubmit)="submitForm(formGroup.value)" nzLayout="horizontal">
+    <nz-form-item>
+      <nz-form-label nzSpan="6" nzRequired nzFor="name">角色名</nz-form-label>
+      <nz-form-control nzSpan="12" nzErrorTip=" 请输入角色名!">
+        <input nz-input formControlName="name" id="name" name="name" placeholder="请输入角色名">
+      </nz-form-control>
+    </nz-form-item>
+  
+    <div nz-row>
+      <div nz-col [nzLg]="{'span':6,'offset':6}" [nzXs]="{'span':12}">请分配系统权限</div>
+      <div nz-col nzSpan="12">请分配系统菜单</div>
+    </div>
+    <div nz-row>
+      <div nz-col [nzLg]="{'span':6,'offset':6}" [nzXs]="{'span':12}">
+        <!--  默认展开，不然会有子节点都全选了父节点却是未选状态 -->
+        <nz-tree #permissionTree nzAsyncData="false" nzCheckable [nzData]="permissions" [nzExpandAll]="true"></nz-tree>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-tree #menuTree nzAsyncData="false" nzShowIcon="true" nzCheckable [nzData]="menus" [nzExpandAll]="true"></nz-tree>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="close()" type="button">
+        取消
+      </button>
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit">
+        保存
+      </button>
+    </div>
+  
+  </form>

@@ -3,13 +3,12 @@ import { SharedModule } from '@shared';
 import { SysRoutingModule } from './sys-routing.module';
 import { UserComponent } from './user/user.component';
 import { UserRoleComponent } from './user/user-role/user-role.component';
-import { SysRoleComponent } from './role/sys-role.component';
-import { SysRoleEditComponent } from './role/edit/sys-role-edit.component';
-import { SysRoleAddComponent } from './role/add/sys-role-add.component';
+import { SysRoleComponent } from './role/role.component';
 import { MenuComponent } from './menu/menu.component';
-import { MenuModalComponent } from './menu/menu-modal.component';
+import { MenuModalComponent } from './menu/modal/menu-modal.component';
 import { PermissionComponent } from './permission/permission.component';
 import { UserModalComponent } from './user/modal/user-modal.component';
+import { RoleModalComponent } from './role/modal/role-modal.component';
 
 const COMPONENTS = [
   UserComponent,
@@ -19,9 +18,8 @@ const COMPONENTS = [
 ];
 const COMPONENTS_NOROUNT = [
   UserRoleComponent,
-  SysRoleEditComponent,
-  SysRoleAddComponent,
   MenuModalComponent,
+  RoleModalComponent, // 角色模态框
   UserModalComponent // 用户新增、编辑时弹出的模态框
 ];
 

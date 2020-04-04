@@ -26,6 +26,7 @@ export class UserLoginComponent implements OnDestroy {
     public http: _HttpClient,
     public msg: NzMessageService,
   ) {
+    modalSrv.closeAll();
     this.form = fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.minLength(6)]],
@@ -33,7 +34,6 @@ export class UserLoginComponent implements OnDestroy {
       captcha: [null, [Validators.required]],
       remember: [true],
     });
-    modalSrv.closeAll();
   }
 
   // #region fields

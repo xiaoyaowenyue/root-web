@@ -11,8 +11,8 @@ import { Result } from '@shared/result';
 })
 export class UserModalComponent implements OnInit {
     validateForm: FormGroup;
-    record: any = {};
-    title = '';
+    record: any = {}; // 从UserComponent传过来
+    title; // 从UserComponent传过来
 
     constructor(private fb: FormBuilder, private sysUserService: SysUserService, private ref: NzModalRef) { }
 
@@ -24,7 +24,6 @@ export class UserModalComponent implements OnInit {
                 gender: [this.record.gender],
             }
         );
-        this.title = this.ref.getInstance().nzComponentParams.title;
     }
 
     // 提交表单

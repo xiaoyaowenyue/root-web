@@ -3,8 +3,7 @@ import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 import { STChange, STColumn } from '@delon/abc';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { ModalHelper } from '@delon/theme';
-import { Result } from '@shared/result';
-import { MenuModalComponent } from './menu-modal.component';
+import { MenuModalComponent } from './modal/menu-modal.component';
 
 @Component({
   selector: 'app-menu',
