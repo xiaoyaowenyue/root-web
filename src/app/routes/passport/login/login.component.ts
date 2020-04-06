@@ -103,7 +103,7 @@ export class UserLoginComponent implements OnDestroy {
     // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.http
-      .post('/login', {
+      .post('/auth/login', {
         // type: this.type,
         type: loginType,
         username: this.username.value,
@@ -116,7 +116,7 @@ export class UserLoginComponent implements OnDestroy {
         const tokenInfo = { expireIn: res.data.expireIn, token: res.data.accessToken };
         this.tokenService.set(tokenInfo);
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-        this.startupSrv.load().then(() => {
+        this.startupSrv.load().subscribe(() => {
           let url = this.tokenService.referrer.url || '/';
           if (url.includes('/passport')) url = '/';
           this.router.navigateByUrl(url);

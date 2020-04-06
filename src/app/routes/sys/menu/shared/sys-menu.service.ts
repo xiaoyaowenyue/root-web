@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 import { Result } from '@shared/result';
+import { SysMenu } from './sys-menu';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ export class SysMenuService {
 
     constructor(private http: _HttpClient) { }
 
-    url = '/api/v1/sysMenus';
+    url = '/auth/api/v1/sys/menus';
 
     add(menu: SysMenu): Observable<Result<any>> {
         return this.http.post(this.url, menu);
@@ -37,13 +38,6 @@ export class SysMenuService {
         return this.http.delete(this.url, { ids: checkedIds });
     }
 
-    /**
-     * 查找角色菜单
-     */
-    findRoleMenus(roleId: string): Observable<Result<any>> {
-        return this.http.get(`${this.url}/role_menu`, { roleId });
-    }
-
     // 查找菜单选项
     findMenuOptions(id: string): Observable<Result<any>> {
         return this.http.get(`${this.url}/options/tree`, { id });
@@ -53,12 +47,4 @@ export class SysMenuService {
         return this.http.get(`${this.url}/parents/id_list`, { id });
     }
 
-}
-
-export interface SysMenu {
-    id: string;
-    pid: string;
-    text: string;
-    icon?: string;
-    link?: string;
 }

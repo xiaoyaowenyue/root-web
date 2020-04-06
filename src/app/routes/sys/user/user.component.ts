@@ -4,9 +4,9 @@ import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
 import { SysUserService } from 'app/routes/sys/user/shared/sys-user.service';
 import { UserRoleComponent } from './user-role/user-role.component';
-import { UserVO } from './shared/user.vo';
 import { PageData } from '@shared/page-data';
 import { UserModalComponent } from './modal/user-modal.component';
+import { UserVO } from './shared/user-vo';
 
 
 @Component({
@@ -26,23 +26,16 @@ export class UserComponent implements OnInit {
   // 查询参数
   q: any = {
     username: '',
-    gender: '',
+    nickname: '',
     page: 1
   };
 
-  genderEnum = [
-    { label: '请选择', value: '' },
-    { label: '男', value: 'MALE' },
-    { label: '女', value: 'FEMALE' },
-    { label: '保密', value: 'UNKNOWN' }
-  ];
 
   columns: STColumn[] = [
     { title: '编号', type: 'checkbox', index: 'id' },
     { title: '头像', type: 'img', index: 'avatar' },
-    { title: '用户名', index: 'username' },
-    { title: '性别', index: 'gender' },
-    { title: '邮箱', index: 'email' },
+    { title: '账号', index: 'username' },
+    { title: '昵称', index: 'nickname' },
     {
       title: '编辑',
       buttons: [

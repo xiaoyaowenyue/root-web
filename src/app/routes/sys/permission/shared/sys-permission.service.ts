@@ -8,12 +8,11 @@ import { Result } from '@shared/result';
 })
 export class SysPermissionService {
 
-
     constructor(private http: _HttpClient) { }
 
-    url = '/api/v1/sysPermissions';
+    url = '/auth/api/v1/sys/permissions';
 
-    delete(id: string) {
+    delete(id: number) {
         return this.http.delete(`${this.url}/${id}`);
     }
 
@@ -26,8 +25,14 @@ export class SysPermissionService {
         return this.http.get(`${this.url}/list`);
     }
 
-    deleteBatch(checkedIds: string[]) {
+    deleteBatch(checkedIds: number[]) {
         return this.http.delete(this.url, checkedIds);
+    }
+    add(value: any) {
+        return this.http.post(`${this.url}`, value);
+    }
+    update(sysPermission: any): Observable<Result<any>> {
+        return this.http.put(`${this.url}/${sysPermission.id}`, sysPermission);
     }
 
 }

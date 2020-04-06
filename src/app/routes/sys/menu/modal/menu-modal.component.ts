@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SysMenuService, SysMenu } from 'app/routes/sys/menu/shared/sys-menu.service';
+import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 import { NzModalRef, CascaderOption, NzMessageService } from 'ng-zorro-antd';
 import { zip } from 'rxjs';
+import { SysMenu } from '../shared/sys-menu';
 
 @Component({
   selector: 'app-menu-modal',

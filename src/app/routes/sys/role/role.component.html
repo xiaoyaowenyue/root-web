@@ -11,8 +11,9 @@
         </nz-form-item>
       </div>
 
-      <div nz-col>
-        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+      <div nz-col nzSpan="8">
+        <button nz-button [nzType]="'primary'" type="submit" [nzLoading]="loading"><i nz-icon
+            nzType="search"></i>查询</button>
       </div>
 
     </div>
@@ -31,7 +32,6 @@
 
   <div class="my-md"></div>
 
-  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="q.page" [ps]="q.size"
-    (change)="onChange($event)"></st>
+  <st [columns]="columns" [data]="data.content" [total]="data.totalElements" [pi]="q.page" [ps]="q.size" (change)="onChange($event)"></st>
 
 </nz-card>

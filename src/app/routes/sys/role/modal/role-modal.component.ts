@@ -4,9 +4,7 @@ import { _HttpClient } from '@delon/theme';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
 import { zip } from 'rxjs';
-import { SysMenuService } from 'app/routes/sys/menu/shared/sys-menu.service';
 import { RoleRequest } from '../shared/role-request';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'sys-role-modal',
@@ -27,8 +25,7 @@ export class RoleModalComponent implements OnInit {
     private ref: NzModalRef,
     public http: _HttpClient,
     private fb: FormBuilder,
-    private sysRoleService: SysRoleService,
-    private menuService: SysMenuService
+    private sysRoleService: SysRoleService
   ) { }
 
   ngOnInit(): void {
@@ -37,8 +34,8 @@ export class RoleModalComponent implements OnInit {
       name: [this.record.name, [Validators.required]],
     });
     zip(
-      this.sysRoleService.findRolePermissions(this.record.id),
-      this.menuService.findRoleMenus(this.record.id)
+      this.sysRoleService.findRolePermissions(this.record.id||0),
+      this.sysRoleService.findRoleMenus(this.record.id||0)
     ).subscribe(([permissionResult, menuResult]) => {
       this.permissions = permissionResult.data;
       this.menus = menuResult.data;
@@ -69,11 +66,11 @@ export class RoleModalComponent implements OnInit {
     const roleRequest: RoleRequest = { name: value.name, permissionIds, menuIds };
     if (this.record.id === undefined) {
       this.sysRoleService.add(roleRequest).subscribe(res => {
-        this.ref.close(res);
+        this.ref.close(res.msg);
       })
     } else {
       this.sysRoleService.update(this.record.id, roleRequest).subscribe(res => {
-        this.ref.close(res);
+        this.ref.close(res.msg);
       });
     }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Result } from '@shared/result';
 import { _HttpClient } from '@delon/theme';
-import { UserVO } from './user.vo';
+import { UserVO } from './user-vo';
 import { PageData } from '@shared/page-data';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { PageData } from '@shared/page-data';
 })
 export class SysUserService {
 
-  url = '/api/v1/sysUsers';
+  url = '/auth/api/v1/sys/users';
 
   constructor(private http: _HttpClient) { }
 
@@ -21,7 +21,7 @@ export class SysUserService {
 
   // 获取用户角色
   findSysUserRoles(userId: string): Observable<Result<any>> {
-    return this.http.get(`${this.url}/${userId}/sysRoles`);
+    return this.http.get(`${this.url}/${userId}/roles`);
   }
 
 
@@ -37,7 +37,7 @@ export class SysUserService {
 
   // 用户绑定角色
   updateSysUserRoles(userId: string, roleIds: string[]): Observable<Result<any>> {
-    return this.http.post(`${this.url}/${userId}/sysRoles`, roleIds);
+    return this.http.post(`${this.url}/${userId}/roles`, roleIds);
   }
 
   // 删除用户

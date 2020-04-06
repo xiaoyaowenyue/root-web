@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STChange, STColumn, STComponent, STData } from '@delon/abc';
 import { NzMessageService, NzModalService, ModalOptionsForService, NzNotificationService } from 'ng-zorro-antd';
 import { Result } from '@shared/result';
 import { SysRoleService } from 'app/routes/sys/role/shared/sys-role.service';
 import { RoleModalComponent } from './modal/role-modal.component';
+import { timer } from 'rxjs';
 
 
 @Component({
   selector: 'sys-role',
-  templateUrl: './role.component.html',
+  templateUrl: './role.component.html'
 })
 export class SysRoleComponent implements OnInit {
 

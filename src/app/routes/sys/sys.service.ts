@@ -2,22 +2,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { _HttpClient } from '@delon/theme';
 import { Result } from '@shared/result';
-import { UserVO } from 'app/routes/sys/user/shared/user.vo';
+import { UserInfo } from 'app/routes/sys/user/shared/user-vo';
+import { SysModule } from './sys.module';
 
+/**
+ * 获取系统用户基本信息、菜单
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class SysService {
-  url = '/api/v1/sys';
+  url = '/auth/api/v1/sys';
 
   constructor(private http: _HttpClient) { }
 
-  findUserInfo(): Observable<Result<UserVO>> {
+  findUserInfo(): Observable<Result<UserInfo>> {
     return this.http.get(this.url + '/userInfo');
-  }
-
-  findMenus(): Observable<Result<any>> {
-    return this.http.get(this.url + '/menus');
   }
 
   // 修改密码

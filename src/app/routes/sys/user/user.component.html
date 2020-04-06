@@ -4,7 +4,7 @@
     <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
       <div nz-col nzMd="4" nzSm="24">
         <nz-form-item>
-          <nz-form-label nzFor="username">用户名</nz-form-label>
+          <nz-form-label nzFor="username">账号</nz-form-label>
           <nz-form-control>
             <input nz-input [(ngModel)]="q.username" name="username" placeholder="请输入" id="username">
           </nz-form-control>
@@ -12,11 +12,9 @@
       </div>
       <div nz-col nzMd="4" nzSm="24">
         <nz-form-item>
-          <nz-form-label nzFor="gender">性别</nz-form-label>
+          <nz-form-label nzFor="nickname">昵称</nz-form-label>
           <nz-form-control>
-            <nz-select [(ngModel)]="q.gender" name="gender" id="gender">
-              <nz-option *ngFor="let item of genderEnum" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
-            </nz-select>
+            <input nz-input [(ngModel)]="q.nickname" name="nickname" placeholder="请输入" id="nickname">
           </nz-form-control>
         </nz-form-item>
       </div>

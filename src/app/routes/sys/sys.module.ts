@@ -9,6 +9,7 @@ import { MenuModalComponent } from './menu/modal/menu-modal.component';
 import { PermissionComponent } from './permission/permission.component';
 import { UserModalComponent } from './user/modal/user-modal.component';
 import { RoleModalComponent } from './role/modal/role-modal.component';
+import { PermissionModalComponent } from './permission/modal/permission-modal.component';
 
 const COMPONENTS = [
   UserComponent,
@@ -19,8 +20,9 @@ const COMPONENTS = [
 const COMPONENTS_NOROUNT = [
   UserRoleComponent,
   MenuModalComponent,
-  RoleModalComponent, // 角色模态框
-  UserModalComponent // 用户新增、编辑时弹出的模态框
+  UserModalComponent, // 用户新增、编辑时弹出的模态框
+  RoleModalComponent, // 角色新增、编辑模态框
+  PermissionModalComponent //权限新增、编辑模态框
 ];
 
 @NgModule({

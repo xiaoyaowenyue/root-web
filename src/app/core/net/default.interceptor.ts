@@ -9,7 +9,7 @@ import {
   HttpResponseBase,
   HttpResponse
 } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, empty } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService, NzModalRef } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
@@ -132,9 +132,9 @@ export class DefaultInterceptor implements HttpInterceptor {
       catchError((err) => {
         // 如果是Http自带的错误(4xx,5xx等错误码)，直接在这里处理了
         if (err instanceof HttpErrorResponse) {
-          this.handleData(err);
+          return this.handleData(err);
         }
-        return throwError(err);
+        return empty(); // 给个空的observable
       }
       ),
     );

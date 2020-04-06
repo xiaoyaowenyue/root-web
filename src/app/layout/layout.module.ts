@@ -6,7 +6,12 @@ import { HeaderComponent } from './default/header/header.component';
 import { SidebarComponent } from './default/sidebar/sidebar.component';
 import { HeaderStorageComponent } from './default/header/components/storage.component';
 import { HeaderUserComponent } from './default/header/components/user.component';
-
+// passport
+import { LayoutPassportComponent } from './passport/passport.component';
+import { HeaderTaskComponent } from './default/header/components/task.component';
+import { HeaderSearchComponent } from './default/header/components/search.component';
+import { HeaderNotifyComponent } from './default/header/components/notify.component';
+import { HeaderIconComponent } from './default/header/components/icon.component';
 // import { SettingDrawerComponent } from './default/setting-drawer/setting-drawer.component';
 // import { SettingDrawerItemComponent } from './default/setting-drawer/setting-drawer-item.component';
 
@@ -22,11 +27,14 @@ const COMPONENTS = [
 
 const HEADERCOMPONENTS = [
   HeaderStorageComponent,
-  HeaderUserComponent
+  HeaderUserComponent,
+  HeaderIconComponent,   // 图标
+  HeaderTaskComponent,   // 任务
+  HeaderNotifyComponent, // 通知
+  HeaderSearchComponent  // 搜索框
 ];
 
-// passport
-import { LayoutPassportComponent } from './passport/passport.component';
+
 const PASSPORT = [
   LayoutPassportComponent
 ];

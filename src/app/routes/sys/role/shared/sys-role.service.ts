@@ -11,7 +11,7 @@ export class SysRoleService {
 
   constructor(private http: _HttpClient) { }
 
-  url = '/api/v1/sysRoles';
+  url = '/auth/api/v1/sys/roles';
 
   findByPage(q: any): Observable<Result<any>> {
     return this.http.get(this.url, q);
@@ -39,7 +39,11 @@ export class SysRoleService {
 
   // 查找角色权限
   findRolePermissions(id: any): Observable<Result<any>> {
-    return this.http.get(`${this.url}/role_permissions`, { id })
+    return this.http.get(`${this.url}/${id}/permissions`)
+  }
+  //查找角色菜单
+  findRoleMenus(roleId: string): Observable<Result<any>> {
+    return this.http.get(`${this.url}/${roleId}/menus`);
   }
 
 }
